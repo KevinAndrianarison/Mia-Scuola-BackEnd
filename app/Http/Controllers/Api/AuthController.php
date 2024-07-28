@@ -56,19 +56,19 @@ class AuthController extends Controller
     {
 
         $validatedData = $request->validate([
-            'name' => 'required',
+            'status_user' => 'required',
             'email' => 'nullable',
             'password' => 'required',
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
+            'status_user' => $validatedData['status_user'],
             'email' => $validatedData['email'],
             'password' => bcrypt($validatedData['password']),
         ]);
 
         return response()->json($user, 201);
-    }
+  }
 
     public function login(Request $request)
     {
@@ -78,7 +78,7 @@ class AuthController extends Controller
         ]);
 
         if (!$token = JWTAuth::attempt($validatedData)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Autorisation refusé !'], 401);
         }
 
         return $this->createNewToken($token);
@@ -101,6 +101,6 @@ class AuthController extends Controller
     public function logout()
     {
         JWTAuth::invalidate(JWTAuth::getToken());
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Connexion réussi !']);
     }
 }

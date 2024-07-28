@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('etablissements', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->decimal('price');
-            $table->integer('quantity');
+            $table->string("nom_etab");
+            $table->string("slogan_etab");
+            $table->string("descri_etab");
+            $table->string("abr_etab");
+            $table->string("logo_etab");
+            $table->string("dateCreation_etab");
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('etablissements');
     }
 };
