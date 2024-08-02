@@ -14,4 +14,8 @@ class Niveau extends Model
     {
         return $this->belongsTo(Au::class);
     }
+    public function mention()
+    {
+        return $this->hasMany(Mention::class);
+    }
 }

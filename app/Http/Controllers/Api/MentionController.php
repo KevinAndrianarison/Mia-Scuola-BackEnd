@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Niveau;
+use App\Models\Mention;
 use Illuminate\Http\Request;
 
-class NiveauController extends Controller
+class MentionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class NiveauController extends Controller
     public function index()
     {
         //
-        return response()->json(Niveau::with('au')->get(), 200);
+        return response()->json(Mention::with('niveau')->get(), 200);
     }
 
     /**
@@ -24,12 +24,12 @@ class NiveauController extends Controller
     {
         //
         $request->validate([
-            'nom_niveau' => 'required',
-            'au_id' => 'required|exists:aus,id'
-
+            'nom_mention' => 'required',
+            'abr_mention' => 'required',
+            'niveau_id' => 'required|exists:niveaux,id'
         ]);
-        $niveau = Niveau::create($request->all());
-        return response()->json($niveau, 201);
+        $mention = Mention::create($request->all());
+        return response()->json($mention, 201);
     }
 
     /**
@@ -38,8 +38,8 @@ class NiveauController extends Controller
     public function show($id)
     {
         //
-        $niveau = Niveau::findOrFail($id);
-        return response()->json($niveau->load('au'), 200);
+        $mention = Mention::findOrFail($id);
+        return response()->json($mention->load('niveau'), 200);
     }
 
     /**
@@ -48,13 +48,14 @@ class NiveauController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $niveau = Niveau::findOrFail($id);
+        $mention = Mention::findOrFail($id);
         $request->validate([
-            'nom_niveau' => 'required',
-            'au_id' => 'required|exists:aus,id'
+            'nom_mention' => 'required',
+            'abr_mention' => 'required',
+            'niveau_id' => 'required|exists:niveaux,id'
         ]);
-        $niveau->update($request->all());
-        return response()->json($niveau, 200);
+        $mention->update($request->all());
+        return response()->json($mention, 200);
     }
 
     /**
@@ -63,8 +64,8 @@ class NiveauController extends Controller
     public function destroy($id)
     {
         //
-        $niveau = Niveau::findOrFail($id);
-        $niveau->delete();
+        $mention = Mention::findOrFail($id);
+        $mention->delete();
         return response()->json(null, 204);
     }
 }

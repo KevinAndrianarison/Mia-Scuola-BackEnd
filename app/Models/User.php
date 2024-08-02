@@ -21,7 +21,13 @@ class User extends Authenticatable implements JWTSubject
         'status_user',
         'email',
         'password',
+        'photo_name'
     ];
+
+    public function directeur()
+    {
+        return $this->hasMany(Directeur::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

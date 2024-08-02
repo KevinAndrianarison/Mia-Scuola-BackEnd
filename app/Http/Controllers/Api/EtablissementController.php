@@ -30,7 +30,7 @@ class EtablissementController extends Controller
             'nom_etab' => 'required|string',
             'slogan_etab' => 'required|string',
             'descri_etab' => 'required|string',
-            'abr_etab' => 'required',
+            'abr_etab' => 'required|string',
             'dateCreation_etab' => 'required|string',
             'logo_etab' => 'required|file|mimes:jpg,png'
         ]);
@@ -46,7 +46,7 @@ class EtablissementController extends Controller
             'descri_etab' => $validatedData['descri_etab'],
             'abr_etab' => $validatedData['abr_etab'],
             'dateCreation_etab' => $validatedData['dateCreation_etab'],
-            'logo_etab' => $fileName
+            'logo_name' => $fileName
         ]);
 
         return response()->json($fileRecord, 201);
@@ -55,7 +55,7 @@ class EtablissementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $file = Etablissement::find($id);
 
@@ -70,7 +70,7 @@ class EtablissementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     //
     {
         $validatedData = $request->validate([
@@ -85,15 +85,15 @@ class EtablissementController extends Controller
         $fileRecord = Etablissement::findOrFail($id);
 
         if ($request->hasFile('logo_etab')) {
-            if ($fileRecord->file_name) {
-                Storage::delete('public/etablissement/' . $fileRecord->file_name);
+            if ($fileRecord->logo_name) {
+                Storage::delete('public/etablissement/' . $fileRecord->logo_name);
             }
 
             $file = $request->file('logo_etab');
             $fileName = $file->getClientOriginalName();
             $path = $file->storeAs('public/etablissement', $fileName);
 
-            $validatedData['file_name'] = $fileName;
+            $validatedData['logo_name'] = $fileName;
         }
 
         $fileRecord->update($validatedData);
@@ -104,14 +104,14 @@ class EtablissementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     //
     {
         $fileRecord = Etablissement::find($id);
 
         if ($fileRecord) {
-            if ($fileRecord->file_name) {
-                Storage::disk('public')->delete('etablissement/' . $fileRecord->file_name);
+            if ($fileRecord->logo_name) {
+                Storage::disk('public')->delete('etablissement/' . $fileRecord->logo_name);
             }
 
             $fileRecord->delete();

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
@@ -18,6 +19,8 @@ class AuthController extends Controller
     public function index()
     {
         //
+        $files = User::all();
+        return response()->json($files, 200);
     }
 
     /**
@@ -31,17 +34,47 @@ class AuthController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         //
+        $file = User::find($id);
+
+        if ($file) {
+            return response()->json($file, 200);
+        } else {
+            return response()->json(['error' => 'User introuvable !'], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'status_user' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'photo' => 'required'
+        ]);
+
+        $fileRecord = User::findOrFail($id);
+
+        if ($request->hasFile('photo')) {
+            if ($fileRecord->photo_name) {
+                Storage::delete('public/users/' . $fileRecord->photo_name);
+            }
+
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/users', $fileName);
+
+            $validatedData['photo_name'] = $fileName;
+        }
+
+        $fileRecord->update($validatedData);
+
+        return response()->json($fileRecord, 200);
     }
 
     /**
@@ -50,6 +83,18 @@ class AuthController extends Controller
     public function destroy(string $id)
     {
         //
+        $fileRecord = User::find($id);
+
+        if ($fileRecord) {
+            if ($fileRecord->photo_name) {
+                Storage::disk('public')->delete('users/' . $fileRecord->photo_name);
+            }
+
+            $fileRecord->delete();
+            return response()->json(['message' => 'User supprimé'], 200);
+        } else {
+            return response()->json(['error' => 'User introuvable'], 404);
+        }
     }
 
     public function register(Request $request)
@@ -57,18 +102,25 @@ class AuthController extends Controller
 
         $validatedData = $request->validate([
             'status_user' => 'required',
-            'email' => 'nullable',
+            'email' => 'required',
             'password' => 'required',
+            'photo' => 'required|file|mimes:jpg,png'
         ]);
 
-        $user = User::create([
+        $file = $request->file('photo');
+        $fileName = $file->getClientOriginalName();
+
+        $path = $file->storeAs('public/users', $fileName);
+
+        $fileRecord = User::create([
             'status_user' => $validatedData['status_user'],
             'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
+            'password' => $validatedData['password'],
+            'photo_name' => $fileName
         ]);
 
-        return response()->json($user, 201);
-  }
+        return response()->json($fileRecord, 201);
+    }
 
     public function login(Request $request)
     {

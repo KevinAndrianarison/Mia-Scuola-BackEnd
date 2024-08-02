@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('etablissements', function (Blueprint $table) {
+        Schema::create('mentions', function (Blueprint $table) {
             $table->id();
-            $table->string("nom_etab");
-            $table->string("slogan_etab");
-            $table->string("descri_etab");
-            $table->string("abr_etab");
-            $table->string("logo_name");
-            $table->string("dateCreation_etab");
+            $table->string('nom_mention');
+            $table->string("abr_mention");
+            $table->foreignId('niveau_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('etablissements');
+        Schema::dropIfExists('mentions');
     }
 };

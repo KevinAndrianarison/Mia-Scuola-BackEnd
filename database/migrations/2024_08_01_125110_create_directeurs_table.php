@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('etablissements', function (Blueprint $table) {
+        Schema::create('directeurs', function (Blueprint $table) {
             $table->id();
-            $table->string("nom_etab");
-            $table->string("slogan_etab");
-            $table->string("descri_etab");
-            $table->string("abr_etab");
-            $table->string("logo_name");
-            $table->string("dateCreation_etab");
+            $table->string("nomComplet_dir");
+            $table->string("grade_dir")->nullable();
+            $table->integer("telephone_dir")->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('etablissements');
+        Schema::dropIfExists('directeurs');
     }
 };
