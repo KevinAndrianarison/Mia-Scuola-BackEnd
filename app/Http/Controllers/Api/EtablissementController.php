@@ -27,12 +27,12 @@ class EtablissementController extends Controller
     //
     {
         $validatedData = $request->validate([
-            'nom_etab' => 'required|string',
-            'slogan_etab' => 'required|string',
-            'descri_etab' => 'required|string',
-            'abr_etab' => 'required|string',
-            'dateCreation_etab' => 'required|string',
-            'logo_etab' => 'required|file|mimes:jpg,png'
+            'nom_etab' => 'nullable',
+            'slogan_etab' => 'nullable',
+            'descri_etab' => 'nullable',
+            'abr_etab' => 'nullable',
+            'dateCreation_etab' => 'nullable',
+            'logo_etab' => 'nullable'
         ]);
 
         $file = $request->file('logo_etab');
@@ -74,12 +74,12 @@ class EtablissementController extends Controller
     //
     {
         $validatedData = $request->validate([
-            'nom_etab' => 'required|string',
-            'slogan_etab' => 'required|string',
-            'descri_etab' => 'required|string',
-            'abr_etab' => 'required',
-            'dateCreation_etab' => 'required|string',
-            'logo_etab' => 'required|file|mimes:jpg,png'
+            'nom_etab' => 'nullable',
+            'slogan_etab' => 'nullable',
+            'descri_etab' => 'nullable',
+            'abr_etab' => 'nullable',
+            'dateCreation_etab' => 'nullable',
+            'logo_etab' => 'nullable'
         ]);
 
         $fileRecord = Etablissement::findOrFail($id);

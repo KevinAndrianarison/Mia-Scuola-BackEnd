@@ -24,8 +24,8 @@ class AuController extends Controller
     {
         //
         $request->validate([
-            'annee_debut' => 'required',
-            'annee_fin' => 'required',
+            'annee_debut' => 'nullable',
+            'annee_fin' => 'nullable',
             'etablissement_id' => 'required|exists:etablissements,id'
         ]);
         $au = Au::create($request->all());
@@ -50,8 +50,8 @@ class AuController extends Controller
         //
         $au = Au::findOrFail($id);
         $request->validate([
-            'annee_debut' => 'required',
-            'annee_fin' => 'required',
+            'annee_debut' => 'nullable',
+            'annee_fin' => 'nullable',
             'etablissement_id' => 'required|exists:etablissements,id'
         ]);
         $au->update($request->all());

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\EtablissementController;
 use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
+use App\Http\Controllers\Api\AgentscolariteController;
+
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
@@ -22,6 +24,7 @@ Route::apiResource('etablissement', EtablissementController::class);
 
 Route::apiResource('directeur', DirecteurController::class);
 
+Route::apiResource('agentscolarite', AgentscolariteController::class);
 
 Route::apiResource('au', AuController::class);
 

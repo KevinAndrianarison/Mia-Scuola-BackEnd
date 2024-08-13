@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Agentscolarite;
 use App\Models\Directeur;
 use Illuminate\Http\Request;
 
-class DirecteurController extends Controller
+class AgentscolariteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class DirecteurController extends Controller
     public function index()
     {
         //
-        return response()->json(Directeur::with('user')->get(), 200);
+        return response()->json(Agentscolarite::with('user')->get(), 200);
     }
 
     /**
@@ -25,14 +26,14 @@ class DirecteurController extends Controller
     {
         //
         $request->validate([
-            'nomComplet_dir' => 'nullable',
-            'grade_dir' => 'nullable',
-            'telephone_dir' => 'nullable',
+            'nomComplet_scol' => 'nullable',
+            'date_recrutement_scol' => 'nullable',
+            'telephone_scol' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
-        $directeur = Directeur::create($request->all());
+        $agentscolarite = Agentscolarite::create($request->all());
 
-        return response()->json($directeur, 201);
+        return response()->json($agentscolarite, 201);
     }
 
     /**
@@ -41,8 +42,8 @@ class DirecteurController extends Controller
     public function show($id)
     {
         //
-        $directeur = Directeur::findOrFail($id);
-        return response()->json($directeur->load('user'), 200);
+        $agentscolarite = Agentscolarite::findOrFail($id);
+        return response()->json($agentscolarite->load('user'), 200);
     }
 
     /**
@@ -51,15 +52,15 @@ class DirecteurController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $directeur = Directeur::findOrFail($id);
+        $agentscolarite = Agentscolarite::findOrFail($id);
         $request->validate([
-            'nomComplet_dir' => 'nullable',
-            'grade_dir' => 'nullable',
-            'telephone_dir' => 'nullable',
+            'nomComplet_scol' => 'nullable',
+            'date_recrutement_scol' => 'nullable',
+            'telephone_scol' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
-        $directeur->update($request->all());
-        return response()->json($directeur, 200);
+        $agentscolarite->update($request->all());
+        return response()->json($agentscolarite, 200);
     }
 
     /**
@@ -68,8 +69,8 @@ class DirecteurController extends Controller
     public function destroy($id)
     {
         //
-        $directeur = Directeur::findOrFail($id);
-        $directeur->delete();
+        $agentscolarite = Agentscolarite::findOrFail($id);
+        $agentscolarite->delete();
         return response()->json(null, 204);
     }
 }

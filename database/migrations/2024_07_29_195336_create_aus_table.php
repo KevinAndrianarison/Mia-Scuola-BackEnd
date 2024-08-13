@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('aus', function (Blueprint $table) {
             $table->id();
-            $table->integer('annee_debut');
-            $table->integer('annee_fin');
+            $table->integer('annee_debut')->nullable();
+            $table->integer('annee_fin')->nullable();
             $table->foreignId('etablissement_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

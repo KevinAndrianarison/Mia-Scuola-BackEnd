@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('mentions', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_mention');
-            $table->string("abr_mention");
+            $table->string('nom_mention')->nullable();
+            $table->string("abr_mention")->nullable();
             $table->foreignId('niveau_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

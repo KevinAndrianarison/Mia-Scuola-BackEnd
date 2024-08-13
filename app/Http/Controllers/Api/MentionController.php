@@ -24,8 +24,8 @@ class MentionController extends Controller
     {
         //
         $request->validate([
-            'nom_mention' => 'required',
-            'abr_mention' => 'required',
+            'nom_mention' => 'nullable',
+            'abr_mention' => 'nullable',
             'niveau_id' => 'required|exists:niveaux,id'
         ]);
         $mention = Mention::create($request->all());
@@ -50,8 +50,8 @@ class MentionController extends Controller
         //
         $mention = Mention::findOrFail($id);
         $request->validate([
-            'nom_mention' => 'required',
-            'abr_mention' => 'required',
+            'nom_mention' => 'nullable',
+            'abr_mention' => 'nullable',
             'niveau_id' => 'required|exists:niveaux,id'
         ]);
         $mention->update($request->all());

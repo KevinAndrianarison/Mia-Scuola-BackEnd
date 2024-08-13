@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('directeurs', function (Blueprint $table) {
             $table->id();
-            $table->string("nomComplet_dir");
+            $table->string("nomComplet_dir")->nullable();
             $table->string("grade_dir")->nullable();
             $table->integer("telephone_dir")->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');

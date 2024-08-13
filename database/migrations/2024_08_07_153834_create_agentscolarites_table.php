@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('niveaux', function (Blueprint $table) {
+        Schema::create('agentscolarites', function (Blueprint $table) {
             $table->id();
-            $table->string('nom_niveau')->nullable();
-            $table->foreignId('au_id')->constrained()->onDelete('cascade');
+            $table->string("nomComplet_scol")->nullable();
+            $table->integer("telephone_scol")->nullable();
+            $table->string("date_recrutement_scol")->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('niveaux');
+        Schema::dropIfExists('agentscolarites');
     }
 };

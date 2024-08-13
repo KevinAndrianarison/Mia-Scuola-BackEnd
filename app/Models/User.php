@@ -28,6 +28,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Directeur::class);
     }
+    public function agentscolarite()
+    {
+        return $this->hasMany(Agentscolarite::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

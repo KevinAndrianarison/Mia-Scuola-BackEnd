@@ -52,10 +52,10 @@ class AuthController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'status_user' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'photo' => 'required'
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'photo' => 'nullable'
         ]);
 
         $fileRecord = User::findOrFail($id);
@@ -80,7 +80,7 @@ class AuthController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         //
         $fileRecord = User::find($id);
@@ -101,10 +101,10 @@ class AuthController extends Controller
     {
 
         $validatedData = $request->validate([
-            'status_user' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'photo' => 'required|file|mimes:jpg,png'
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'photo' => 'nullable'
         ]);
 
         $file = $request->file('photo');

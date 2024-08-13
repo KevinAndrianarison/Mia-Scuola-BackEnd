@@ -24,7 +24,7 @@ class NiveauController extends Controller
     {
         //
         $request->validate([
-            'nom_niveau' => 'required',
+            'nom_niveau' => 'nullable',
             'au_id' => 'required|exists:aus,id'
 
         ]);
@@ -50,7 +50,7 @@ class NiveauController extends Controller
         //
         $niveau = Niveau::findOrFail($id);
         $request->validate([
-            'nom_niveau' => 'required',
+            'nom_niveau' => 'nullable',
             'au_id' => 'required|exists:aus,id'
         ]);
         $niveau->update($request->all());
