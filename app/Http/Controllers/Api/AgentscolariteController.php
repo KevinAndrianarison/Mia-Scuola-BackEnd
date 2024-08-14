@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Agentscolarite;
-use App\Models\Directeur;
 use Illuminate\Http\Request;
 
 class AgentscolariteController extends Controller
