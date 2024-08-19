@@ -22,6 +22,8 @@ Route::get('user/profilOne/{id}', [AuthController::class, 'show']);
 
 Route::apiResource('etablissement', EtablissementController::class);
 
+Route::get('etablissement/image/{filename}', [EtablissementController::class, 'downloadImage'])->name('file.download');
+
 Route::apiResource('directeur', DirecteurController::class);
 
 Route::apiResource('agentscolarite', AgentscolariteController::class);

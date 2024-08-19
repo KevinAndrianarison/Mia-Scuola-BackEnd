@@ -120,4 +120,16 @@ class EtablissementController extends Controller
             return response()->json(['error' => 'Etablissement introuvable !'], 404);
         }
     }
+
+    public function downloadImage($filename)
+    {
+        $path = storage_path('app/public/etablissement/' . $filename);
+        if (file_exists($path)) {
+            $mimeType = mime_content_type($path);
+            return response()->download($path, $filename, [
+                'Content-Type' => $mimeType,
+            ]);
+        }
+        return abort(404);
+    }
 }
