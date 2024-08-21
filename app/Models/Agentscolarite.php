@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Agentscolarite extends Model
 {
     use HasFactory;
-    protected $fillable = ['nomComplet_scol', 'telephone_scol', 'date_recrutement_scol', 'user_id' ];
+    protected $fillable = ['nomComplet_scol', 'telephone_scol','categorie_scol', 'date_recrutement_scol', 'user_id' ];
 
     public function user()
     {

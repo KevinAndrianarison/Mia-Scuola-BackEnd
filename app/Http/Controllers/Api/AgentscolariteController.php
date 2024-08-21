@@ -28,6 +28,7 @@ class AgentscolariteController extends Controller
             'nomComplet_scol' => 'nullable',
             'date_recrutement_scol' => 'nullable',
             'telephone_scol' => 'nullable',
+            'categorie_scol' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
         $agentscolarite = Agentscolarite::create($request->all());
@@ -56,6 +57,7 @@ class AgentscolariteController extends Controller
             'nomComplet_scol' => 'nullable',
             'date_recrutement_scol' => 'nullable',
             'telephone_scol' => 'nullable',
+            'categorie_scol' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
         $agentscolarite->update($request->all());

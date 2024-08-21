@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('niveaux', function (Blueprint $table) {
             $table->id();
             $table->string('nom_niveau')->nullable();
+            $table->string('abr_niveau')->nullable();
             $table->foreignId('au_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

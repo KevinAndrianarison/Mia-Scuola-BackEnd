@@ -21,22 +21,26 @@ Route::get('user/profilOne/{id}', [AuthController::class, 'show']);
 
 
 Route::apiResource('etablissement', EtablissementController::class);
-
 Route::get('etablissement/image/{filename}', [EtablissementController::class, 'downloadImage'])->name('file.download');
+
 
 Route::apiResource('directeur', DirecteurController::class);
 
+
 Route::apiResource('agentscolarite', AgentscolariteController::class);
+
 
 Route::apiResource('enseignant', EnseignantController::class);
 
 
 Route::apiResource('au', AuController::class);
 
+
 Route::apiResource('niveau', NiveauController::class);
+Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
+
 
 Route::apiResource('mention', MentionController::class);
-
 
 
 Route::middleware('auth:api')->group(function () {

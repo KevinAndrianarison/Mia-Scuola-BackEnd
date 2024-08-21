@@ -25,6 +25,7 @@ class NiveauController extends Controller
         //
         $request->validate([
             'nom_niveau' => 'nullable',
+            'abr_niveau' => 'nullable',
             'au_id' => 'required|exists:aus,id'
 
         ]);
@@ -51,6 +52,7 @@ class NiveauController extends Controller
         $niveau = Niveau::findOrFail($id);
         $request->validate([
             'nom_niveau' => 'nullable',
+            'abr_niveau' => 'nullable',
             'au_id' => 'required|exists:aus,id'
         ]);
         $niveau->update($request->all());
@@ -66,5 +68,11 @@ class NiveauController extends Controller
         $niveau = Niveau::findOrFail($id);
         $niveau->delete();
         return response()->json(null, 204);
+    }
+
+    public function getByAuId($au_id)
+    {
+        $niveau = Niveau::where('au_id', $au_id)->get();
+        return response()->json($niveau, 200);
     }
 }

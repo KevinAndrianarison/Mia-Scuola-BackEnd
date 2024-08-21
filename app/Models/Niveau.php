@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Niveau extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom_niveau', 'au_id'];
+    protected $fillable = ['nom_niveau','abr_niveau', 'au_id'];
 
     public function au()
     {

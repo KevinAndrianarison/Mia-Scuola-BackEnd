@@ -28,6 +28,7 @@ class EnseignantController extends Controller
             'date_recrutement_ens' => 'nullable',
             'telephone_ens' => 'nullable',
             'grade_ens' => 'nullable',
+            'categorie_ens' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
         $enseignant = Enseignant::create($request->all());
@@ -57,6 +58,7 @@ class EnseignantController extends Controller
             'date_recrutement_ens' => 'nullable',
             'telephone_ens' => 'nullable',
             'grade_ens' => 'nullable',
+            'categorie_ens' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
         $enseignant->update($request->all());
