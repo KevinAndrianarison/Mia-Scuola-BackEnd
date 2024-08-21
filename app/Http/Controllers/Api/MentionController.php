@@ -23,13 +23,21 @@ class MentionController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
+        $validatedData = $request->validate([
             'nom_mention' => 'nullable',
             'abr_mention' => 'nullable',
-            'niveau_id' => 'required|exists:niveaux,id'
+            'niveau_ids' => 'required|array',
+            'niveau_ids.*' => 'exists:niveaux,id',
         ]);
-        $mention = Mention::create($request->all());
-        return response()->json($mention, 201);
+
+        foreach ($validatedData['niveau_ids'] as $niveau_id) {
+            Mention::create([
+                'nom_mention' => $validatedData['nom_mention'],
+                'abr_mention' => $validatedData['abr_mention'],
+                'niveau_id' => $niveau_id,
+            ]);
+        }
+        return response()->json(['message' => 'Les mentions ont été ajoutées avec succès.'], 201);
     }
 
     /**
