@@ -29,6 +29,14 @@ class NiveauController extends Controller
             'au_id' => 'required|exists:aus,id'
 
         ]);
+
+        $existing = Niveau::where('abr_niveau', $request->abr_niveau)
+            ->where('au_id', $request->au_id)
+            ->exists();
+            
+        if ($existing) {
+            return response()->json(['message' => 'Niveau déjà existant !'], 400);
+        }
         $niveau = Niveau::create($request->all());
         return response()->json($niveau, 201);
     }

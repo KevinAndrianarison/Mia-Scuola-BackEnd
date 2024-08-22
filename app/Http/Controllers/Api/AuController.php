@@ -22,12 +22,18 @@ class AuController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $request->validate([
-            'annee_debut' => 'nullable',
-            'annee_fin' => 'nullable',
+            'annee_debut' => 'nullable|integer',
+            'annee_fin' => 'nullable|integer',
             'etablissement_id' => 'required|exists:etablissements,id'
         ]);
+        $existing = Au::where('annee_debut', $request->annee_debut)
+            ->where('annee_fin', $request->annee_fin)
+            ->exists();
+
+        if ($existing) {
+            return response()->json(['message' => 'AU déjà existante !'], 400);
+        }
         $au = Au::create($request->all());
         return response()->json($au, 201);
     }
