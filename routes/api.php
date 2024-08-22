@@ -41,6 +41,8 @@ Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
 
 
 Route::apiResource('mention', MentionController::class);
+Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNiveauId']);
+
 
 
 Route::middleware('auth:api')->group(function () {

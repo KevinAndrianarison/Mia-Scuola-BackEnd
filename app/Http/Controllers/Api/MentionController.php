@@ -22,7 +22,6 @@ class MentionController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validatedData = $request->validate([
             'nom_mention' => 'nullable',
             'abr_mention' => 'nullable',
@@ -31,14 +30,24 @@ class MentionController extends Controller
         ]);
 
         foreach ($validatedData['niveau_ids'] as $niveau_id) {
+            $existingMention = Mention::where('abr_mention', $validatedData['abr_mention'])
+                ->where('niveau_id', $niveau_id)
+                ->first();
+
+            if ($existingMention) {
+                return response()->json(['message' => 'Mention déjà existante !']);
+            }
+
             Mention::create([
                 'nom_mention' => $validatedData['nom_mention'],
                 'abr_mention' => $validatedData['abr_mention'],
                 'niveau_id' => $niveau_id,
             ]);
         }
-        return response()->json(['message' => 'Les mentions ont été ajoutées avec succès.'], 201);
+
+        return response()->json(['message' => 'Mention créé !'], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -75,5 +84,11 @@ class MentionController extends Controller
         $mention = Mention::findOrFail($id);
         $mention->delete();
         return response()->json(null, 204);
+    }
+
+    public function getByNiveauId($niveau_id)
+    {
+        $niveau = Mention::where('niveau_id', $niveau_id)->get();
+        return response()->json($niveau, 200);
     }
 }
