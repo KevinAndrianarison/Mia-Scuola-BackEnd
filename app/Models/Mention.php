@@ -15,4 +15,9 @@ class Mention extends Model
         return $this->belongsTo(Niveau::class);
     }
 
+    public function parcour()
+    {
+        return $this->hasMany(Parcour::class);
+    }
+
 }
