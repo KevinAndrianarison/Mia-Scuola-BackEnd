@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mention;
+use App\Models\Niveau;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MentionController extends Controller
 {
@@ -20,33 +22,38 @@ class MentionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'nom_mention' => 'nullable',
-            'abr_mention' => 'nullable',
+            'nom_mention' => 'nullable|string',
+            'abr_mention' => 'nullable|string',
             'niveau_ids' => 'required|array',
-            'niveau_ids.*' => 'exists:niveaux,id',
+            'niveau_ids.*.id' => 'exists:niveaux,id',
+            'niveau_ids.*.abr' => 'required|string',
         ]);
 
-        foreach ($validatedData['niveau_ids'] as $niveau_id) {
-            $existingMention = Mention::where('abr_mention', $validatedData['abr_mention'])
+        foreach ($validatedData['niveau_ids'] as $niveau) {
+            $niveau_id = $niveau['id'];
+            $abrMentionCombiné = $validatedData['abr_mention'] . '-' . $niveau['abr'];
+            $existingMention = Mention::where('abr_mention', $abrMentionCombiné)
                 ->where('niveau_id', $niveau_id)
                 ->first();
 
             if ($existingMention) {
                 return response()->json(['message' => 'Mention déjà existante !']);
             }
-
             Mention::create([
                 'nom_mention' => $validatedData['nom_mention'],
-                'abr_mention' => $validatedData['abr_mention'],
+                'abr_mention' => $abrMentionCombiné,
                 'niveau_id' => $niveau_id,
             ]);
         }
 
         return response()->json(['message' => 'Mention créé !'], 201);
     }
+
+
 
 
     /**
