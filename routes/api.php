@@ -46,7 +46,7 @@ Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNive
 
 
 Route::apiResource('parcours', ParcourController::class);
-Route::get('/parcours/getById/{mention_id}', [ParcourController::class, 'getByNiveauId']);
+Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiveauId']);
 
 
 

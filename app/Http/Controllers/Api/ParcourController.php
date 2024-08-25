@@ -25,16 +25,17 @@ class ParcourController extends Controller
         $request->validate([
             'nom_parcours' => 'nullable',
             'abr_parcours' => 'nullable',
-            'mention_id' => 'required|exists:mentions,id'
-
+            'mention_id' => 'required|exists:mentions,id',
+            'niveau_id' => 'required|exists:niveaux,id'
         ]);
 
         $existing = Parcour::where('abr_parcours', $request->abr_parcours)
             ->where('mention_id', $request->mention_id)
+            ->where('niveau_id', $request->niveau_id)
             ->exists();
 
         if ($existing) {
-            return response()->json(['message' => 'Parcours déjà existant !'], 400);
+            return response()->json(['message' => 'Parcours déjà existant !']);
         }
         $parcours = Parcour::create($request->all());
         return response()->json($parcours, 201);
@@ -60,7 +61,9 @@ class ParcourController extends Controller
         $request->validate([
             'nom_parcours' => 'nullable',
             'abr_parcours' => 'nullable',
-            'mention_id' => 'required|exists:mentions,id'
+            'mention_id' => 'required|exists:mentions,id',
+            'niveau_id' => 'required|exists:niveaux,id'
+
         ]);
         $parcours->update($request->all());
         return response()->json($parcours, 200);
@@ -77,9 +80,9 @@ class ParcourController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getByNiveauId($mention_id)
+    public function getByNiveauId($niveau_id)
     {
-        $parcours = Parcour::where('mention_id', $mention_id)->get();
+        $parcours = Parcour::where('niveau_id', $niveau_id)->get();
         return response()->json($parcours, 200);
     }
 }

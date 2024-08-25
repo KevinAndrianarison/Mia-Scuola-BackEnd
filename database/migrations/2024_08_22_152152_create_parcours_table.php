@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('abr_parcours')->nullable();
             $table->string('nom_parcours')->nullable();
             $table->foreignId('mention_id')->constrained()->onDelete('cascade');
+            $table->foreignId('niveau_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
