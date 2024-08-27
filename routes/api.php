@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\ParcourController;
+use App\Http\Controllers\Api\SemestreController;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
@@ -47,6 +48,9 @@ Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNive
 
 Route::apiResource('parcours', ParcourController::class);
 Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiveauId']);
+
+Route::apiResource('semestre', SemestreController::class);
+Route::get('/semestre/getById/{parcour_id}', [SemestreController::class, 'getByParcoursId']);
 
 
 

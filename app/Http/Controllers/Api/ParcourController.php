@@ -14,7 +14,7 @@ class ParcourController extends Controller
     public function index()
     {
         //
-        return response()->json(Parcour::with('parcour')->get(), 200);
+        return response()->json(Parcour::with('mention')->get(), 200);
     }
 
     /**
@@ -48,7 +48,7 @@ class ParcourController extends Controller
     {
         //
         $parcours = Parcour::findOrFail($id);
-        return response()->json($parcours->load('parcour'), 200);
+        return response()->json($parcours->load('mention'), 200);
     }
 
     /**

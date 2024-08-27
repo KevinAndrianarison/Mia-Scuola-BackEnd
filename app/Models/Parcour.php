@@ -18,4 +18,8 @@ class Parcour extends Model
     {
         return $this->belongsTo(Niveau::class);
     }
+    public function semestre()
+    {
+        return $this->hasMany(Semestre::class);
+    }
 }
