@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Parcour extends Model
 {
     use HasFactory;
-    protected $fillable = ['abr_parcours', 'nom_parcours', "mention_id", "niveau_id"];
+    protected $fillable = ['abr_parcours', 'nom_parcours', "mention_id", "niveau_id", "enseignant_id"];
 
     public function mention()
     {
         return $this->belongsTo(Mention::class);
+    }
+    public function enseignant()
+    {
+        return $this->belongsTo(Enseignant::class);
     }
     public function niveau()
     {

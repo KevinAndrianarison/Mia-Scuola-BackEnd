@@ -44,10 +44,14 @@ Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
 
 Route::apiResource('mention', MentionController::class);
 Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNiveauId']);
+Route::get('/mention/getByEnsId/{enseignant_id}', [MentionController::class, 'getByEnseignantId']);
+
 
 
 Route::apiResource('parcours', ParcourController::class);
 Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiveauId']);
+Route::get('/parcours/getByEnsId/{enseignant_id}', [ParcourController::class, 'getByEnseignantId']);
+
 
 Route::apiResource('semestre', SemestreController::class);
 Route::get('/semestre/getById/{parcour_id}', [SemestreController::class, 'getByParcoursId']);

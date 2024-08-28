@@ -26,6 +26,7 @@ class ParcourController extends Controller
             'nom_parcours' => 'nullable',
             'abr_parcours' => 'nullable',
             'mention_id' => 'required|exists:mentions,id',
+            'enseignant_id' => 'nullable|exists:enseignants,id',
             'niveau_id' => 'required|exists:niveaux,id'
         ]);
 
@@ -62,6 +63,7 @@ class ParcourController extends Controller
             'nom_parcours' => 'nullable',
             'abr_parcours' => 'nullable',
             'mention_id' => 'required|exists:mentions,id',
+            'enseignant_id' => 'nullable|exists:enseignants,id',
             'niveau_id' => 'required|exists:niveaux,id'
 
         ]);
@@ -83,6 +85,12 @@ class ParcourController extends Controller
     public function getByNiveauId($niveau_id)
     {
         $parcours = Parcour::where('niveau_id', $niveau_id)->get();
+        return response()->json($parcours, 200);
+    }
+
+    public function getByEnseignantId($enseignant_id)
+    {
+        $parcours = Parcour::where('enseignant_id', $enseignant_id)->get();
         return response()->json($parcours, 200);
     }
 }

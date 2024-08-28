@@ -30,6 +30,7 @@ class MentionController extends Controller
             'abr_mention' => 'nullable|string',
             'niveau_ids' => 'required|array',
             'niveau_ids.*.id' => 'exists:niveaux,id',
+            'enseignant_id' => 'nullable|exists:enseignants,id',
             'niveau_ids.*.abr' => 'required|string',
         ]);
 
@@ -76,6 +77,7 @@ class MentionController extends Controller
         $request->validate([
             'nom_mention' => 'nullable',
             'abr_mention' => 'nullable',
+            'enseignant_id' => 'nullable|exists:enseignants,id',
             'niveau_id' => 'required|exists:niveaux,id'
         ]);
         $mention->update($request->all());
@@ -97,5 +99,11 @@ class MentionController extends Controller
     {
         $niveau = Mention::where('niveau_id', $niveau_id)->get();
         return response()->json($niveau, 200);
+    }
+
+    public function getByEnseignantId($enseignant_id)
+    {
+        $parcours = Mention::where('enseignant_id', $enseignant_id)->get();
+        return response()->json($parcours, 200);
     }
 }

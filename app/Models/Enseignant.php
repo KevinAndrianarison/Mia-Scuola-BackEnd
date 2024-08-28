@@ -14,4 +14,12 @@ class Enseignant extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function mention()
+    {
+        return $this->hasMany(Mention::class);
+    }
+    public function parcour()
+    {
+        return $this->hasMany(Parcour::class);
+    }
 }
