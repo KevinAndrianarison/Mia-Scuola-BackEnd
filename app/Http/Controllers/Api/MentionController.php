@@ -78,7 +78,6 @@ class MentionController extends Controller
             'nom_mention' => 'nullable',
             'abr_mention' => 'nullable',
             'enseignant_id' => 'nullable|exists:enseignants,id',
-            'niveau_id' => 'required|exists:niveaux,id'
         ]);
         $mention->update($request->all());
         return response()->json($mention, 200);
@@ -97,7 +96,9 @@ class MentionController extends Controller
 
     public function getByNiveauId($niveau_id)
     {
-        $niveau = Mention::where('niveau_id', $niveau_id)->get();
+        $niveau = Mention::where('niveau_id', $niveau_id)
+            ->with('enseignant')
+            ->get();;
         return response()->json($niveau, 200);
     }
 

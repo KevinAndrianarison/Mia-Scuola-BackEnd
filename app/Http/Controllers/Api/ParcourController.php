@@ -62,9 +62,7 @@ class ParcourController extends Controller
         $request->validate([
             'nom_parcours' => 'nullable',
             'abr_parcours' => 'nullable',
-            'mention_id' => 'required|exists:mentions,id',
             'enseignant_id' => 'nullable|exists:enseignants,id',
-            'niveau_id' => 'required|exists:niveaux,id'
 
         ]);
         $parcours->update($request->all());
@@ -84,7 +82,9 @@ class ParcourController extends Controller
 
     public function getByNiveauId($niveau_id)
     {
-        $parcours = Parcour::where('niveau_id', $niveau_id)->get();
+        $parcours = Parcour::where('niveau_id', $niveau_id)
+            ->with('enseignant')
+            ->get();
         return response()->json($parcours, 200);
     }
 
