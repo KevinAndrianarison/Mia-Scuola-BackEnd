@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("date_recrutement_ens")->nullable();
             $table->string("grade_ens")->nullable();
             $table->string("categorie_ens")->nullable();
+            $table->string("chefMention_status")->nullable();
+            $table->string("chefParcours_status")->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

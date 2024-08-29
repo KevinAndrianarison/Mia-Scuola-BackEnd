@@ -59,7 +59,9 @@ class EnseignantController extends Controller
             'telephone_ens' => 'nullable',
             'grade_ens' => 'nullable',
             'categorie_ens' => 'nullable',
-            'user_id' => 'required|exists:users,id'
+            'chefMention_status' => 'nullable',
+            'chefParcours_status' => 'nullable',
+
         ]);
         $enseignant->update($request->all());
         return response()->json($enseignant, 200);
