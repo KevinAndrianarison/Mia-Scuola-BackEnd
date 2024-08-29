@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
 use App\Http\Controllers\Api\EnseignantController;
+use App\Http\Controllers\Api\EtudiantController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SemestreController;
 
@@ -20,6 +21,8 @@ Route::put('user/setup/{id}', [AuthController::class, 'update']);
 Route::delete('user/delete/{id}', [AuthController::class, 'destroy']);
 Route::get('user/profilAll', [AuthController::class, 'index']);
 Route::get('user/profilOne/{id}', [AuthController::class, 'show']);
+Route::post('user/createEtudiant', [AuthController::class, 'store']);
+
 
 
 Route::apiResource('etablissement', EtablissementController::class);
@@ -33,6 +36,10 @@ Route::apiResource('agentscolarite', AgentscolariteController::class);
 
 
 Route::apiResource('enseignant', EnseignantController::class);
+
+
+Route::apiResource('etudiant', EtudiantController::class);
+
 
 
 Route::apiResource('au', AuController::class);

@@ -29,6 +29,13 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+        ]);
+        $user = User::create($request->all());
+
+        return response()->json($user, 201);
     }
 
     /**
