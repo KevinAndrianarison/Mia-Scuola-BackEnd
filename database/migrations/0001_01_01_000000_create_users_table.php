@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string("photo_name")->nullable();
             $table->string('status_user')->nullable();
+            $table->string("validiter_compte")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -32,6 +31,7 @@ class AuthController extends Controller
         $request->validate([
             'status_user' => 'nullable',
             'email' => 'nullable',
+            'validiter_compte' => 'nullable',
         ]);
         $user = User::create($request->all());
 
@@ -62,6 +62,7 @@ class AuthController extends Controller
             'status_user' => 'nullable',
             'email' => 'nullable',
             'password' => 'nullable',
+            'validiter_compte' => 'nullable',
             'photo' => 'nullable'
         ]);
 
@@ -111,6 +112,7 @@ class AuthController extends Controller
             'status_user' => 'nullable',
             'email' => 'nullable',
             'password' => 'nullable',
+            'validiter_compte' => 'nullable',
             'photo' => 'nullable'
         ]);
 
@@ -123,6 +125,7 @@ class AuthController extends Controller
             'status_user' => $validatedData['status_user'],
             'email' => $validatedData['email'],
             'password' => $validatedData['password'],
+            'validiter_compte' => $validatedData['validiter_compte'],
             'photo_name' => $fileName
         ]);
 
