@@ -62,7 +62,9 @@ Route::get('/parcours/getByEnsId/{enseignant_id}', [ParcourController::class, 'g
 
 Route::apiResource('semestre', SemestreController::class);
 Route::get('/semestre/getById/{parcour_id}', [SemestreController::class, 'getByParcoursId']);
-
+Route::get('/semestres/{semestreId}/etudiants', [SemestreController::class, 'showEtudiants']);
+Route::post('/semestres/addEtudiant', [SemestreController::class, 'addEtudiant']);
+Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreController::class, 'removeEtudiant']);
 
 
 Route::middleware('auth:api')->group(function () {

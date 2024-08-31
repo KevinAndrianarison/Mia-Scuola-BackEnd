@@ -14,4 +14,8 @@ class Etudiant extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function semestre()
+    {
+        return $this->belongsToMany(Semestre::class,'etudiant_semestre', 'etudiant_id', 'semestre_id');
+    }
 }

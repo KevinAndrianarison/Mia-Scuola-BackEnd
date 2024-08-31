@@ -15,7 +15,6 @@ class SemestreController extends Controller
     {
         //
         return response()->json(Semestre::with('parcour')->get(), 200);
-
     }
 
     /**
@@ -43,7 +42,7 @@ class SemestreController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( $id)
+    public function show($id)
     {
         //
         $semestres = Semestre::findOrFail($id);
@@ -69,7 +68,7 @@ class SemestreController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy( $id)
+    public function destroy($id)
     {
         //
         $semestres = Semestre::findOrFail($id);
@@ -81,5 +80,34 @@ class SemestreController extends Controller
     {
         $parcours = Semestre::where('parcour_id', $parcour_id)->get();
         return response()->json($parcours, 200);
+    }
+
+    public function showEtudiants($semestreId)
+    {
+        $semestre = Semestre::findOrFail($semestreId);
+        $etudiants = $semestre->etudiant()->with('user')->get();
+        return response()->json($etudiants);
+    }
+
+
+    public function addEtudiant(Request $request)
+    {
+
+        $etudiantId = $request->input('etudiant_id');
+        $semestreIds = $request->input('semestre_ids');
+        foreach ($semestreIds as $semestreId) {
+            $semestre = Semestre::findOrFail($semestreId);
+            $semestre->etudiant()->attach($etudiantId);
+        }
+
+        return response()->json(['message' => 'Étudiant ajouté !']);
+    }
+
+    public function removeEtudiant($semestreId, $etudiantId)
+    {
+        $semestre = Semestre::findOrFail($semestreId);
+        $semestre->etudiant()->detach($etudiantId);
+
+        return response()->json(['message' => 'Étudiant retiré !']);
     }
 }

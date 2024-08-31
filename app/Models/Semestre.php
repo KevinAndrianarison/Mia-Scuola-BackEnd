@@ -14,4 +14,8 @@ class Semestre extends Model
     {
         return $this->belongsTo(Parcour::class);
     }
+    public function etudiant()
+    {
+        return $this->belongsToMany(Etudiant::class,'etudiant_semestre','semestre_id', 'etudiant_id' );
+    }
 }
