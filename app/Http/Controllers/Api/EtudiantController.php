@@ -33,6 +33,7 @@ class EtudiantController extends Controller
             'nom_pere_etud' => 'nullable',
             'sexe_etud' => 'nullable',
             'CIN_etud' => 'nullable',
+            'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
@@ -68,6 +69,7 @@ class EtudiantController extends Controller
             'nom_pere_etud' => 'nullable',
             'sexe_etud' => 'nullable',
             'CIN_etud' => 'nullable',
+            'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
         ]);
         $etudiant->update($request->all());

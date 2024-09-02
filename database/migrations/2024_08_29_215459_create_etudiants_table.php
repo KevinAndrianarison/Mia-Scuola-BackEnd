@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nom_mere_etud')->nullable();
             $table->string('nom_pere_etud')->nullable();
             $table->string('sexe_etud')->nullable();
+            $table->string("validiter_inscri")->nullable();
             $table->integer('CIN_etud')->nullable();
             $table->integer('nom_tuteur')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
