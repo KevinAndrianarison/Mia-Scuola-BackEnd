@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Etablissement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -65,9 +67,8 @@ class AuthController extends Controller
             'validiter_compte' => 'nullable',
             'photo' => 'nullable'
         ]);
-
         $fileRecord = User::findOrFail($id);
-
+        $userEmail = $fileRecord->email;
         if ($request->hasFile('photo')) {
             if ($fileRecord->photo_name) {
                 Storage::delete('public/users/' . $fileRecord->photo_name);
@@ -79,11 +80,40 @@ class AuthController extends Controller
 
             $validatedData['photo_name'] = $fileName;
         }
-
         $fileRecord->update($validatedData);
+        if (!empty($validatedData['password'])) {
+            $etablissement = Etablissement::first();
+
+            if ($etablissement) {
+                $nomEtablissement = $etablissement->nom_etab;
+                $emailEtablissement = $etablissement->email_etab;
+                $password = $validatedData['password'];
+
+                $messageContent = "Bonjour {$userEmail},\n\n" .
+                    "✅ Votre compte a été créé avec succès !\n\n" .
+                    "Voici vos nouvelles informations de connexion :\n" .
+                    "Email : {$userEmail}\n" .
+                    "Mot de passe : {$password}\n\n" .
+                    "Cordialement,\n{$nomEtablissement} 🤝";
+
+                config([
+                    'mail.mailers.smtp.username' => $emailEtablissement,
+                    'mail.mailers.smtp.password' => 'anpa oysz axto vohr',
+                    'mail.from.address' => $emailEtablissement,
+                    'mail.from.name' => $nomEtablissement,
+                ]);
+
+                Mail::raw($messageContent, function ($message) use ($userEmail, $emailEtablissement, $nomEtablissement) {
+                    $message->to($userEmail)
+                        ->from($emailEtablissement, $nomEtablissement)
+                        ->subject("Création de votre compte à {$nomEtablissement}");
+                });
+            }
+        }
 
         return response()->json($fileRecord, 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -107,7 +137,6 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
         $validatedData = $request->validate([
             'status_user' => 'nullable',
             'email' => 'nullable',
@@ -118,7 +147,6 @@ class AuthController extends Controller
 
         $file = $request->file('photo');
         $fileName = $file->getClientOriginalName();
-
         $path = $file->storeAs('public/users', $fileName);
 
         $fileRecord = User::create([
@@ -129,8 +157,39 @@ class AuthController extends Controller
             'photo_name' => $fileName
         ]);
 
-        return response()->json($fileRecord, 201);
+        $etablissement = Etablissement::first();
+
+        if ($etablissement) {
+            $nomEtablissement = $etablissement->nom_etab;
+            $emailEtablissement = $etablissement->email_etab;
+            $password = $validatedData['password'];
+
+            $messageContent = "Bonjour {$validatedData['email']},\n\n" .
+                "✅ Votre compte a été créé avec succès !\n\n" .
+                "Voici vos informations de connexion :\n" .
+                "Email : {$validatedData['email']}\n" .
+                "Mot de passe : {$password}\n\n" .
+                "Cordialement,\n{$nomEtablissement} 🤝";
+
+            config([
+                'mail.mailers.smtp.username' => $emailEtablissement,
+                'mail.mailers.smtp.password' => 'anpa oysz axto vohr',
+                'mail.from.address' => $emailEtablissement,
+                'mail.from.name' => $nomEtablissement,
+            ]);
+
+            Mail::raw($messageContent, function ($message) use ($validatedData, $emailEtablissement, $nomEtablissement) {
+                $message->to($validatedData['email'])
+                    ->from($emailEtablissement, $nomEtablissement)
+                    ->subject("Création de votre compte à {$nomEtablissement}");
+            });
+        }
+
+        return response()->json([
+            $fileRecord
+        ], 201);
     }
+
 
     public function login(Request $request)
     {

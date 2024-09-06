@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SemestreController;
+use Illuminate\Support\Facades\Mail;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
@@ -71,3 +72,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('user/profil', [AuthController::class, 'profil']);
     Route::post('user/logout', [AuthController::class, 'logout']);
 });
+
+

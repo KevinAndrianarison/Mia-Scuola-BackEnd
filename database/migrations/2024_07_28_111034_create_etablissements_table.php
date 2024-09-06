@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string("nom_etab")->nullable();
             $table->string("slogan_etab")->nullable();
+            $table->string("ville_etab")->nullable();
+            $table->string("email_etab")->nullable();
             $table->string("descri_etab")->nullable();
             $table->string("abr_etab")->nullable();
+            $table->string("codePostal_etab")->nullable();
+            $table->string("pays_etab")->nullable();
             $table->string("logo_name")->nullable();
             $table->string("dateCreation_etab")->nullable();
             $table->timestamps();

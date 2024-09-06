@@ -30,6 +30,10 @@ class EtablissementController extends Controller
             'nom_etab' => 'nullable',
             'slogan_etab' => 'nullable',
             'descri_etab' => 'nullable',
+            'ville_etab' => 'nullable',
+            'email_etab' => 'nullable',
+            'pays_etab' => 'nullable',
+            'codePostal_etab' => 'nullable',
             'abr_etab' => 'nullable',
             'dateCreation_etab' => 'nullable',
             'logo_etab' => 'nullable'
@@ -45,6 +49,10 @@ class EtablissementController extends Controller
             'slogan_etab' => $validatedData['slogan_etab'],
             'descri_etab' => $validatedData['descri_etab'],
             'abr_etab' => $validatedData['abr_etab'],
+            'ville_etab' => $validatedData['ville_etab'],
+            'codePostal_etab' => $validatedData['codePostal_etab'],
+            'pays_etab' => $validatedData['pays_etab'],
+            'email_etab' => $validatedData['email_etab'],
             'dateCreation_etab' => $validatedData['dateCreation_etab'],
             'logo_name' => $fileName
         ]);
@@ -78,6 +86,10 @@ class EtablissementController extends Controller
             'slogan_etab' => 'nullable',
             'descri_etab' => 'nullable',
             'abr_etab' => 'nullable',
+            'ville_etab' => 'nullable',
+            'email_etab' => 'nullable',
+            'codePostal_etab' => 'nullable',
+            'pays_etab' => 'nullable',
             'dateCreation_etab' => 'nullable',
             'logo_etab' => 'nullable'
         ]);
