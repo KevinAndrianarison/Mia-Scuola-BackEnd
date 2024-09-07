@@ -81,12 +81,12 @@ class AuthController extends Controller
             $validatedData['photo_name'] = $fileName;
         }
         $fileRecord->update($validatedData);
-        if (!empty($validatedData['password'])) {
             $etablissement = Etablissement::first();
 
             if ($etablissement) {
                 $nomEtablissement = $etablissement->nom_etab;
                 $emailEtablissement = $etablissement->email_etab;
+                $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
                 $password = $validatedData['password'];
 
                 $messageContent = "Bonjour {$userEmail},\n\n" .
@@ -98,7 +98,7 @@ class AuthController extends Controller
 
                 config([
                     'mail.mailers.smtp.username' => $emailEtablissement,
-                    'mail.mailers.smtp.password' => 'anpa oysz axto vohr',
+                    'mail.mailers.smtp.password' => $emailEtablissementMdp,
                     'mail.from.address' => $emailEtablissement,
                     'mail.from.name' => $nomEtablissement,
                 ]);
@@ -109,9 +109,10 @@ class AuthController extends Controller
                         ->subject("Création de votre compte à {$nomEtablissement}");
                 });
             }
-        }
 
-        return response()->json($fileRecord, 200);
+        return response()->json([
+            $fileRecord
+        ], 201);
     }
 
 
