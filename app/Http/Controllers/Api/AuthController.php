@@ -115,6 +115,8 @@ class AuthController extends Controller
     }
 
 
+
+
     /**
      * Remove the specified resource from storage.
      */
@@ -162,6 +164,7 @@ class AuthController extends Controller
         if ($etablissement) {
             $nomEtablissement = $etablissement->nom_etab;
             $emailEtablissement = $etablissement->email_etab;
+            $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
             $password = $validatedData['password'];
 
             $messageContent = "Bonjour {$validatedData['email']},\n\n" .
@@ -173,7 +176,7 @@ class AuthController extends Controller
 
             config([
                 'mail.mailers.smtp.username' => $emailEtablissement,
-                'mail.mailers.smtp.password' => 'anpa oysz axto vohr',
+                'mail.mailers.smtp.password' => $emailEtablissementMdp,
                 'mail.from.address' => $emailEtablissement,
                 'mail.from.name' => $nomEtablissement,
             ]);
@@ -185,9 +188,38 @@ class AuthController extends Controller
             });
         }
 
-        return response()->json([
-            $fileRecord
-        ], 201);
+        return response()->json(
+            $fileRecord,
+            201
+        );
+    }
+
+
+    public function createDirecteur(Request $request)
+    {
+        $validatedData = $request->validate([
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'validiter_compte' => 'nullable',
+            'photo' => 'nullable'
+        ]);
+
+        $file = $request->file('photo');
+        $fileName = $file->getClientOriginalName();
+        $path = $file->storeAs('public/users', $fileName);
+
+        $fileRecord = User::create([
+            'status_user' => $validatedData['status_user'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'validiter_compte' => $validatedData['validiter_compte'],
+            'photo_name' => $fileName
+        ]);
+        return response()->json(
+            $fileRecord,
+            201
+        );
     }
 
 

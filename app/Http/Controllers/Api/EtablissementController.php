@@ -33,6 +33,7 @@ class EtablissementController extends Controller
             'ville_etab' => 'nullable',
             'email_etab' => 'nullable',
             'pays_etab' => 'nullable',
+            'mdpAppGmail_etab' => 'nullable',
             'codePostal_etab' => 'nullable',
             'abr_etab' => 'nullable',
             'dateCreation_etab' => 'nullable',
@@ -51,6 +52,7 @@ class EtablissementController extends Controller
             'abr_etab' => $validatedData['abr_etab'],
             'ville_etab' => $validatedData['ville_etab'],
             'codePostal_etab' => $validatedData['codePostal_etab'],
+            'mdpAppGmail_etab' => $validatedData['mdpAppGmail_etab'],
             'pays_etab' => $validatedData['pays_etab'],
             'email_etab' => $validatedData['email_etab'],
             'dateCreation_etab' => $validatedData['dateCreation_etab'],
@@ -89,6 +91,7 @@ class EtablissementController extends Controller
             'ville_etab' => 'nullable',
             'email_etab' => 'nullable',
             'codePostal_etab' => 'nullable',
+            'mdpAppGmail_etab' => 'nullable',
             'pays_etab' => 'nullable',
             'dateCreation_etab' => 'nullable',
             'logo_etab' => 'nullable'

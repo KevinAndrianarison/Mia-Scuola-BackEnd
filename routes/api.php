@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\SemestreController;
 use Illuminate\Support\Facades\Mail;
 
 Route::post('user/register', [AuthController::class, 'register']);
+Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
 Route::post('user/login', [AuthController::class, 'login']);
 Route::put('user/setup/{id}', [AuthController::class, 'update']);
 Route::delete('user/delete/{id}', [AuthController::class, 'destroy']);
