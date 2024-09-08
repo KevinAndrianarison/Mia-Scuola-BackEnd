@@ -74,4 +74,10 @@ class AgentscolariteController extends Controller
         $agentscolarite->delete();
         return response()->json(null, 204);
     }
+
+    public function getByUserId($user_id)
+    {
+        $agentscolarite = Agentscolarite::where('user_id', $user_id)->with('user')->get();
+        return response()->json($agentscolarite, 200);
+    }
 }

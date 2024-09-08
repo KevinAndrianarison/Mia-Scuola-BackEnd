@@ -14,7 +14,6 @@ use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SemestreController;
-use Illuminate\Support\Facades\Mail;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
@@ -32,9 +31,14 @@ Route::get('etablissement/image/{filename}', [EtablissementController::class, 'd
 
 
 Route::apiResource('directeur', DirecteurController::class);
+Route::get('/directeur/getById/{user_id}', [DirecteurController::class, 'getByUserId']);
+Route::get('/directeurs/getFirst', [DirecteurController::class, 'getFirst']);
+
 
 
 Route::apiResource('agentscolarite', AgentscolariteController::class);
+Route::get('/agentscolarite/getById/{user_id}', [AgentscolariteController::class, 'getByUserId']);
+
 
 
 Route::apiResource('enseignant', EnseignantController::class);

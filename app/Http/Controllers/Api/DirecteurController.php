@@ -72,4 +72,15 @@ class DirecteurController extends Controller
         $directeur->delete();
         return response()->json(null, 204);
     }
+
+    public function getByUserId($user_id)
+    {
+        $directeur = Directeur::where('user_id', $user_id)->with('user')->get();
+        return response()->json($directeur, 200);
+    }
+
+    public function getFirst()
+    {
+        return response()->json(Directeur::first(), 200);
+    }
 }
