@@ -19,6 +19,7 @@ Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
 Route::post('user/login', [AuthController::class, 'login']);
 Route::put('user/setup/{id}', [AuthController::class, 'update']);
+Route::put('user/setuser/{id}', [AuthController::class, 'setUser']);
 Route::delete('user/delete/{id}', [AuthController::class, 'destroy']);
 Route::get('user/profilAll', [AuthController::class, 'index']);
 Route::get('user/profilOne/{id}', [AuthController::class, 'show']);

@@ -56,7 +56,6 @@ class DirecteurController extends Controller
             'nomComplet_dir' => 'nullable',
             'grade_dir' => 'nullable',
             'telephone_dir' => 'nullable',
-            'user_id' => 'required|exists:users,id'
         ]);
         $directeur->update($request->all());
         return response()->json($directeur, 200);

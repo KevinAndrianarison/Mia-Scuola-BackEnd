@@ -81,35 +81,66 @@ class AuthController extends Controller
             $validatedData['photo_name'] = $fileName;
         }
         $fileRecord->update($validatedData);
-            $etablissement = Etablissement::first();
+        $etablissement = Etablissement::first();
 
-            if ($etablissement) {
-                $nomEtablissement = $etablissement->nom_etab;
-                $emailEtablissement = $etablissement->email_etab;
-                $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
-                $password = $validatedData['password'];
+        if ($etablissement) {
+            $nomEtablissement = $etablissement->nom_etab;
+            $emailEtablissement = $etablissement->email_etab;
+            $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
+            $password = $validatedData['password'];
 
-                $messageContent = "Bonjour {$userEmail},\n\n" .
-                    "✅ Votre compte a été créé avec succès !\n\n" .
-                    "Voici vos nouvelles informations de connexion :\n" .
-                    "Email : {$userEmail}\n" .
-                    "Mot de passe : {$password}\n\n" .
-                    "Cordialement,\n{$nomEtablissement} 🤝";
+            $messageContent = "Bonjour {$userEmail},\n\n" .
+                "✅ Votre compte a été créé avec succès !\n\n" .
+                "Voici vos nouvelles informations de connexion :\n" .
+                "Email : {$userEmail}\n" .
+                "Mot de passe : {$password}\n\n" .
+                "Cordialement,\n{$nomEtablissement} 🤝";
 
-                config([
-                    'mail.mailers.smtp.username' => $emailEtablissement,
-                    'mail.mailers.smtp.password' => $emailEtablissementMdp,
-                    'mail.from.address' => $emailEtablissement,
-                    'mail.from.name' => $nomEtablissement,
-                ]);
+            config([
+                'mail.mailers.smtp.username' => $emailEtablissement,
+                'mail.mailers.smtp.password' => $emailEtablissementMdp,
+                'mail.from.address' => $emailEtablissement,
+                'mail.from.name' => $nomEtablissement,
+            ]);
 
-                Mail::raw($messageContent, function ($message) use ($userEmail, $emailEtablissement, $nomEtablissement) {
-                    $message->to($userEmail)
-                        ->from($emailEtablissement, $nomEtablissement)
-                        ->subject("Création de votre compte à {$nomEtablissement}");
-                });
+            Mail::raw($messageContent, function ($message) use ($userEmail, $emailEtablissement, $nomEtablissement) {
+                $message->to($userEmail)
+                    ->from($emailEtablissement, $nomEtablissement)
+                    ->subject("Création de votre compte à {$nomEtablissement}");
+            });
+        }
+
+        return response()->json([
+            $fileRecord
+        ], 201);
+    }
+
+
+
+
+
+    public function setUser(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'validiter_compte' => 'nullable',
+            'photo' => 'nullable'
+        ]);
+        $fileRecord = User::findOrFail($id);
+        if ($request->hasFile('photo')) {
+            if ($fileRecord->photo_name) {
+                Storage::delete('public/users/' . $fileRecord->photo_name);
             }
 
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/users', $fileName);
+
+            $validatedData['photo_name'] = $fileName;
+        }
+        $fileRecord->update($validatedData);
         return response()->json([
             $fileRecord
         ], 201);
