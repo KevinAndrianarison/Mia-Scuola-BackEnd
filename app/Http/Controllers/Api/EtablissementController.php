@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Etablissement;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -96,25 +97,26 @@ class EtablissementController extends Controller
             'dateCreation_etab' => 'nullable',
             'logo_etab' => 'nullable'
         ]);
-
         $fileRecord = Etablissement::findOrFail($id);
 
         if ($request->hasFile('logo_etab')) {
+
             if ($fileRecord->logo_name) {
                 Storage::delete('public/etablissement/' . $fileRecord->logo_name);
             }
-
             $file = $request->file('logo_etab');
             $fileName = $file->getClientOriginalName();
             $path = $file->storeAs('public/etablissement', $fileName);
-
             $validatedData['logo_name'] = $fileName;
         }
 
         $fileRecord->update($validatedData);
-
         return response()->json($fileRecord, 200);
     }
+
+
+
+
 
     /**
      * Remove the specified resource from storage.
