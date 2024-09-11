@@ -58,7 +58,6 @@ class AgentscolariteController extends Controller
             'date_recrutement_scol' => 'nullable',
             'telephone_scol' => 'nullable',
             'categorie_scol' => 'nullable',
-            'user_id' => 'required|exists:users,id'
         ]);
         $agentscolarite->update($request->all());
         return response()->json($agentscolarite, 200);
