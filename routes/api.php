@@ -47,6 +47,7 @@ Route::apiResource('enseignant', EnseignantController::class);
 
 
 Route::apiResource('etudiant', EtudiantController::class);
+Route::get('/etudiant/getById/{user_id}', [EtudiantController::class, 'getByUserId']);
 
 
 
