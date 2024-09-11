@@ -24,6 +24,7 @@ Route::delete('user/delete/{id}', [AuthController::class, 'destroy']);
 Route::get('user/profilAll', [AuthController::class, 'index']);
 Route::get('user/profilOne/{id}', [AuthController::class, 'show']);
 Route::post('user/createEtudiant', [AuthController::class, 'store']);
+Route::put('user/changemdp/{id}', [AuthController::class, 'changeMdp']);
 
 
 

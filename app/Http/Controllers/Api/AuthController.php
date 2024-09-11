@@ -7,6 +7,7 @@ use App\Models\Etablissement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -267,6 +268,26 @@ class AuthController extends Controller
         }
 
         return $this->createNewToken($token);
+    }
+
+
+    public function changeMdp(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'Newpassword' => 'required',
+        ]);
+        $user = User::findOrFail($id);
+        if (!Hash::check($validatedData['password'], $user->password)) {
+            return response()->json(['error' => 'Mot de passe actuel incorrect'], 403);
+        };
+        $user->update([
+            'password' => $validatedData['Newpassword'],
+        ]);
+        return response()->json([
+            $user
+        ], 201);
     }
 
     public function createNewToken($token)
