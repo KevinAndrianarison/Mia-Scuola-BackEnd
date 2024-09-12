@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -206,25 +207,24 @@ class AuthController extends Controller
                 "Email : {$validatedData['email']}\n" .
                 "Mot de passe : {$password}\n\n" .
                 "Cordialement,\n{$nomEtablissement} 🤝";
+            try {
+                config([
+                    'mail.mailers.smtp.username' => $emailEtablissement,
+                    'mail.mailers.smtp.password' => $emailEtablissementMdp,
+                    'mail.from.address' => $emailEtablissement,
+                    'mail.from.name' => $nomEtablissement,
+                ]);
 
-            config([
-                'mail.mailers.smtp.username' => $emailEtablissement,
-                'mail.mailers.smtp.password' => $emailEtablissementMdp,
-                'mail.from.address' => $emailEtablissement,
-                'mail.from.name' => $nomEtablissement,
-            ]);
-
-            Mail::raw($messageContent, function ($message) use ($validatedData, $emailEtablissement, $nomEtablissement) {
-                $message->to($validatedData['email'])
-                    ->from($emailEtablissement, $nomEtablissement)
-                    ->subject("Création de votre compte à {$nomEtablissement}");
-            });
+                Mail::raw($messageContent, function ($message) use ($validatedData, $emailEtablissement, $nomEtablissement) {
+                    $message->to($validatedData['email'])
+                        ->from($emailEtablissement, $nomEtablissement)
+                        ->subject("Création de votre compte à {$nomEtablissement}");
+                });
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+            }
         }
-
-        return response()->json(
-            $fileRecord,
-            201
-        );
+        return response()->json($fileRecord, 201);
     }
 
 

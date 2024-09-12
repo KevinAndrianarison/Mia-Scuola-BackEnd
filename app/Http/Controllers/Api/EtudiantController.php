@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EtudiantController extends Controller
 {
@@ -26,6 +27,11 @@ class EtudiantController extends Controller
         $request->validate([
             'nomComplet_etud' => 'nullable',
             'date_naissance_etud' => 'nullable',
+            'lieux_naissance_etud' => 'nullable',
+            'nationalite_etud' => 'nullable',
+            'serieBAC_etud' => 'nullable',
+            'anneeBAC_etud' => 'nullable',
+            'etabOrigin_etud' => 'nullable',
             'adresse_etud' => 'nullable',
             'telephone_etud' => 'nullable',
             'matricule_etud' => 'nullable',
@@ -58,10 +64,14 @@ class EtudiantController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $etudiant = Etudiant::findOrFail($id);
-        $request->validate([
+        $validatedData = $request->validate([
             'nomComplet_etud' => 'nullable',
             'date_naissance_etud' => 'nullable',
+            'lieux_naissance_etud' => 'nullable',
+            'nationalite_etud' => 'nullable',
+            'serieBAC_etud' => 'nullable',
+            'anneeBAC_etud' => 'nullable',
+            'etabOrigin_etud' => 'nullable',
             'adresse_etud' => 'nullable',
             'telephone_etud' => 'nullable',
             'matricule_etud' => 'nullable',
@@ -71,8 +81,21 @@ class EtudiantController extends Controller
             'CIN_etud' => 'nullable',
             'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
+            'photoBordereaux' => 'nullable',
+
         ]);
-        $etudiant->update($request->all());
+        $etudiant = Etudiant::findOrFail($id);
+        if ($request->hasFile('photoBordereaux')) {
+
+            if ($etudiant->photoBordereaux_name) {
+                Storage::delete('public/bordereaux/' . $etudiant->photoBordereaux_name);
+            }
+            $file = $request->file('photoBordereaux');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/bordereaux', $fileName);
+            $validatedData['photoBordereaux_name'] = $fileName;
+        }
+        $etudiant->update($validatedData);
         return response()->json($etudiant, 200);
     }
 
@@ -83,8 +106,16 @@ class EtudiantController extends Controller
     {
         //
         $etudiant = Etudiant::findOrFail($id);
-        $etudiant->delete();
-        return response()->json(null, 204);
+        if ($etudiant) {
+            if ($etudiant->photoBordereaux_name) {
+                Storage::disk('public')->delete('bordereaux/' . $etudiant->photoBordereaux_name);
+            }
+
+            $etudiant->delete();
+            return response()->json(['message' => 'Etudiant supprimé !'], 200);
+        } else {
+            return response()->json(['error' => 'Etudiant introuvable !'], 404);
+        }
     }
 
 
