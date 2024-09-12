@@ -44,6 +44,7 @@ Route::get('/agentscolarite/getById/{user_id}', [AgentscolariteController::class
 
 
 Route::apiResource('enseignant', EnseignantController::class);
+Route::get('/enseignant/getById/{user_id}', [EnseignantController::class, 'getByUserId']);
 
 
 Route::apiResource('etudiant', EtudiantController::class);
