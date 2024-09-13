@@ -72,16 +72,29 @@ class MentionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $mention = Mention::findOrFail($id);
         $request->validate([
             'nom_mention' => 'nullable',
             'abr_mention' => 'nullable',
             'enseignant_id' => 'nullable|exists:enseignants,id',
         ]);
+        if ($mention->enseignant_id) {
+            $request->request->remove('enseignant_id');
+            return response()->json(['message' => 'Un enseignant est déjà associé à cette mention !']);
+        }
         $mention->update($request->all());
         return response()->json($mention, 200);
     }
+
+
+    public function clearEnseignantId($id)
+    {
+        $mention = Mention::findOrFail($id);
+        $mention->enseignant_id = null;
+        $mention->save();
+        return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
+    }
+
 
     /**
      * Remove the specified resource from storage.

@@ -65,9 +65,24 @@ class ParcourController extends Controller
             'enseignant_id' => 'nullable|exists:enseignants,id',
 
         ]);
+        if ($parcours->enseignant_id) {
+            $request->request->remove('enseignant_id');
+            return response()->json(['message' => 'Un enseignant est déjà associé à ce parcours !']);
+        }
         $parcours->update($request->all());
         return response()->json($parcours, 200);
     }
+
+
+
+    public function clearEnseignantId($id)
+    {
+        $parcours = Parcour::findOrFail($id);
+        $parcours->enseignant_id = null;
+        $parcours->save();
+        return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
+    }
+
 
     /**
      * Remove the specified resource from storage.

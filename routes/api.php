@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SemestreController;
+use App\Http\Controllers\Api\UeController;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
@@ -45,6 +46,7 @@ Route::get('/agentscolarite/getById/{user_id}', [AgentscolariteController::class
 
 Route::apiResource('enseignant', EnseignantController::class);
 Route::get('/enseignant/getById/{user_id}', [EnseignantController::class, 'getByUserId']);
+Route::get('/enseignants/{id}', [EnseignantController::class, 'getOneEnseignant']);
 
 
 Route::apiResource('etudiant', EtudiantController::class);
@@ -62,12 +64,16 @@ Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
 Route::apiResource('mention', MentionController::class);
 Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNiveauId']);
 Route::get('/mention/getByEnsId/{enseignant_id}', [MentionController::class, 'getByEnseignantId']);
+Route::put('/mentions/{id}/clearEnseignant', [MentionController::class, 'clearEnseignantId']);
+
 
 
 
 Route::apiResource('parcours', ParcourController::class);
 Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiveauId']);
 Route::get('/parcours/getByEnsId/{enseignant_id}', [ParcourController::class, 'getByEnseignantId']);
+Route::put('/parcours/{id}/clearEnseignant', [ParcourController::class, 'clearEnseignantId']);
+
 
 
 Route::apiResource('semestre', SemestreController::class);
@@ -77,9 +83,12 @@ Route::post('/semestres/addEtudiant', [SemestreController::class, 'addEtudiant']
 Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreController::class, 'removeEtudiant']);
 
 
+
+Route::apiResource('ue', UeController::class);
+
+
+
 Route::middleware('auth:api')->group(function () {
     Route::get('user/profil', [AuthController::class, 'profil']);
     Route::post('user/logout', [AuthController::class, 'logout']);
 });
-
-

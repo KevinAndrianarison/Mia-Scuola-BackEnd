@@ -83,4 +83,5 @@ class EnseignantController extends Controller
         $enseignant = Enseignant::where('user_id', $user_id)->with('user')->get();
         return response()->json($enseignant, 200);
     }
+
 }
