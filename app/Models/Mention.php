@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Mention extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom_mention', 'niveau_id', "abr_mention", "enseignant_id"];
+    protected $fillable = ['nom_mention', 'niveau_id', "abr_mention", "enseignant_id", 'au_id'];
 
     public function niveau()
     {
         return $this->belongsTo(Niveau::class);
+    }
+
+    public function au()
+    {
+        return $this->belongsTo(Au::class);
     }
 
     public function enseignant()

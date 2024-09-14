@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Mention;
-use App\Models\Niveau;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+
 
 class MentionController extends Controller
 {
@@ -31,6 +30,7 @@ class MentionController extends Controller
             'niveau_ids' => 'required|array',
             'niveau_ids.*.id' => 'exists:niveaux,id',
             'enseignant_id' => 'nullable|exists:enseignants,id',
+            'au_id' => 'nullable|exists:aus,id',
             'niveau_ids.*.abr' => 'required|string',
         ]);
 
@@ -48,6 +48,8 @@ class MentionController extends Controller
                 'nom_mention' => $validatedData['nom_mention'],
                 'abr_mention' => $abrMentionCombiné,
                 'niveau_id' => $niveau_id,
+                'au_id' =>$validatedData['au_id'],
+
             ]);
         }
 
@@ -115,9 +117,11 @@ class MentionController extends Controller
         return response()->json($niveau, 200);
     }
 
-    public function getByEnseignantId($enseignant_id)
+    public function getByEnseignantId($enseignant_id, $au_id)
     {
-        $parcours = Mention::where('enseignant_id', $enseignant_id)->get();
+        $parcours = Mention::where('enseignant_id', $enseignant_id)
+            ->where('au_id', $au_id)
+            ->get();
         return response()->json($parcours, 200);
     }
 }

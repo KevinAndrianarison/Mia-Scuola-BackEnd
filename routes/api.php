@@ -63,7 +63,7 @@ Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
 
 Route::apiResource('mention', MentionController::class);
 Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNiveauId']);
-Route::get('/mention/getByEnsId/{enseignant_id}', [MentionController::class, 'getByEnseignantId']);
+Route::get('/mention/getByEnsId/{enseignant_id}/{au_id}', [MentionController::class, 'getByEnseignantId']);
 Route::put('/mentions/{id}/clearEnseignant', [MentionController::class, 'clearEnseignantId']);
 
 
@@ -71,6 +71,7 @@ Route::put('/mentions/{id}/clearEnseignant', [MentionController::class, 'clearEn
 
 Route::apiResource('parcours', ParcourController::class);
 Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiveauId']);
+Route::get('/parcours/getByMentionId/{mention_id}', [ParcourController::class, 'getByMentionId']);
 Route::get('/parcours/getByEnsId/{enseignant_id}', [ParcourController::class, 'getByEnseignantId']);
 Route::put('/parcours/{id}/clearEnseignant', [ParcourController::class, 'clearEnseignantId']);
 

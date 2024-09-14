@@ -18,4 +18,9 @@ class Au extends Model
     {
         return $this->hasMany(Niveau::class);
     }
+
+    public function mention()
+    {
+        return $this->hasMany(Mention::class);
+    }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nom_mention')->nullable();
             $table->string("abr_mention")->nullable();
             $table->foreignId('niveau_id')->constrained()->onDelete('cascade');
+            $table->foreignId('au_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('enseignant_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
