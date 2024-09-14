@@ -85,6 +85,8 @@ Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreCo
 
 
 Route::apiResource('ue', UeController::class);
+Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']);
+
 
 
 

@@ -75,4 +75,10 @@ class UeController extends Controller
         $ue->delete();
         return response()->json(null, 204);
     }
+
+    public function getBySemestreId($semestre_id)
+    {
+        $ue = Ue::where('semestre_id', $semestre_id)->get();
+        return response()->json($ue, 200);
+    }
 }
