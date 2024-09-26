@@ -14,4 +14,9 @@ class Ue extends Model
         return $this->belongsTo(Semestre::class);
     }
 
+    public function ec()
+    {
+        return $this->hasMany(Ec::class);
+    }
+
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EtablissementController;
 use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
+use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
 use App\Http\Controllers\Api\ParcourController;
@@ -88,6 +89,9 @@ Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreCo
 Route::apiResource('ue', UeController::class);
 Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']);
 
+
+Route::apiResource('ec', EcController::class);
+Route::get('/ec/getById/{ue_id}', [EcController::class, 'getByUeId']);
 
 
 
