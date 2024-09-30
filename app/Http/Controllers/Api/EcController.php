@@ -14,7 +14,8 @@ class EcController extends Controller
     public function index()
     {
         //
-        return response()->json(Ec::with('ue')->get(), 200);
+        return response()->json(Ec::with('ue')
+            ->get(), 200);
     }
 
     /**
@@ -64,7 +65,13 @@ class EcController extends Controller
             'volume_et' => 'nullable',
             'volume_ed' => 'nullable',
             'volume_tp' => 'nullable',
+            'enseignant_id' => 'nullable|exists:enseignants,id',
+
         ]);
+        if ($ec->enseignant_id) {
+            $request->request->remove('enseignant_id');
+            return response()->json(['message' => 'Un enseignant est déjà associé à ce EC !']);
+        }
         $ec->update($request->all());
         return response()->json($ec, 200);
     }
@@ -82,7 +89,16 @@ class EcController extends Controller
 
     public function getByUeId($ue_id)
     {
-        $ec = Ec::where('ue_id', $ue_id)->get();
+        $ec = Ec::where('ue_id', $ue_id)->with('enseignant')->get();
         return response()->json($ec, 200);
     }
+
+    public function clearEnseignantId($id)
+    {
+        $ec = Ec::findOrFail($id);
+        $ec->enseignant_id = null;
+        $ec->save();
+        return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
+    }
+
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('volume_ed')->nullable();
             $table->integer('volume_tp')->nullable();
             $table->foreignId('ue_id')->constrained()->onDelete('cascade');
+            $table->foreignId('enseignant_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

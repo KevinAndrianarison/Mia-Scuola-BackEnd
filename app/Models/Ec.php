@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Ec extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom_ec', 'volume_et', 'volume_ed', 'volume_tp', 'ue_id'];
+    protected $fillable = ['nom_ec', 'volume_et', 'volume_ed', 'volume_tp', 'ue_id', 'enseignant_id'];
     public function ue()
     {
         return $this->belongsTo(Ue::class);
+    }
+    public function enseignant()
+    {
+        return $this->belongsTo(Enseignant::class);
     }
 }

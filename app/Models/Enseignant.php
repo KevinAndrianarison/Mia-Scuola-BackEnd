@@ -22,4 +22,8 @@ class Enseignant extends Model
     {
         return $this->hasMany(Parcour::class);
     }
+    public function ec()
+    {
+        return $this->hasMany(Ec::class);
+    }
 }
