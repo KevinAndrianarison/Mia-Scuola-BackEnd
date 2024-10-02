@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EtablissementController;
 use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
+use App\Http\Controllers\Api\CourController;
 use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
@@ -92,7 +93,13 @@ Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']
 
 Route::apiResource('ec', EcController::class);
 Route::get('/ec/getById/{ue_id}', [EcController::class, 'getByUeId']);
+Route::get('/ec/getByEnsegnantId/{enseignant_id}', [EcController::class, 'getByEnsegnantId']);
 Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId']);
+
+
+
+Route::apiResource('cours', CourController::class);
+Route::get('/cours/getByIdEC/{ec_id}', [EcController::class, 'getByEcId']);
 
 
 

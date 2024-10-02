@@ -17,4 +17,8 @@ class Ec extends Model
     {
         return $this->belongsTo(Enseignant::class);
     }
+    public function cour()
+    {
+        return $this->hasMany(Cour::class);
+    }
 }

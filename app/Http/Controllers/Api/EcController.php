@@ -93,6 +93,12 @@ class EcController extends Controller
         return response()->json($ec, 200);
     }
 
+    public function getByEnsegnantId($enseignant_id)
+    {
+        $ec = Ec::where('enseignant_id', $enseignant_id)->get();
+        return response()->json($ec, 200);
+    }
+
     public function clearEnseignantId($id)
     {
         $ec = Ec::findOrFail($id);
