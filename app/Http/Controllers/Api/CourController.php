@@ -109,7 +109,7 @@ class CourController extends Controller
         }
     }
 
-    public function getByEcId($ec_id)
+    public function getByIdEC($ec_id)
     {
         $cours = Cour::where('ec_id', $ec_id)->get();
         return response()->json($cours, 200);

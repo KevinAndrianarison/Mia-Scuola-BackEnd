@@ -99,7 +99,7 @@ Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId'
 
 
 Route::apiResource('cours', CourController::class);
-Route::get('/cours/getByIdEC/{ec_id}', [EcController::class, 'getByEcId']);
+Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 
 
 
