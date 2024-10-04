@@ -99,13 +99,13 @@ class CourController extends Controller
 
         if ($fileRecord) {
             if ($fileRecord->cours_name) {
-                Storage::disk('public')->delete('etablissement/' . $fileRecord->cours_name);
+                Storage::disk('public')->delete('cours/' . $fileRecord->cours_name);
             }
 
             $fileRecord->delete();
-            return response()->json(['message' => 'EC supprimé !'], 200);
+            return response()->json(['message' => 'Cours supprimé !'], 200);
         } else {
-            return response()->json(['error' => 'EC introuvable !'], 404);
+            return response()->json(['error' => 'Cours introuvable !'], 404);
         }
     }
 
@@ -113,5 +113,17 @@ class CourController extends Controller
     {
         $cours = Cour::where('ec_id', $ec_id)->get();
         return response()->json($cours, 200);
+    }
+
+    public function downloadCours($filename)
+    {
+        $path = storage_path('app/public/cours/' . $filename);
+        if (file_exists($path)) {
+            $mimeType = mime_content_type($path);
+            return response()->download($path, $filename, [
+                'Content-Type' => $mimeType,
+            ]);
+        }
+        return abort(404);
     }
 }

@@ -99,6 +99,7 @@ Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId'
 
 
 Route::apiResource('cours', CourController::class);
+Route::get('cours/file/{filename}', [CourController::class, 'downloadCours'])->name('file.download');
 Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 
 
