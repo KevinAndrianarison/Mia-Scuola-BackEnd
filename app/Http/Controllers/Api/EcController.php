@@ -30,6 +30,7 @@ class EcController extends Controller
             'volume_ed' => 'nullable',
             'volume_tp' => 'nullable',
             'ue_id' => 'required|exists:ues,id',
+            'au_id' => 'required|exists:aus,id',
         ]);
 
         $existing = Ec::where('nom_ec', $request->nom_ec)
@@ -99,6 +100,14 @@ class EcController extends Controller
         return response()->json($ec, 200);
     }
 
+    public function getByEnsegnantIdAndAU($enseignant_id, $au_id)
+    {
+        $ec = Ec::where('enseignant_id', $enseignant_id)
+            ->where('au_id', $au_id)
+            ->get();
+        return response()->json($ec, 200);
+    }
+
     public function clearEnseignantId($id)
     {
         $ec = Ec::findOrFail($id);
@@ -106,5 +115,4 @@ class EcController extends Controller
         $ec->save();
         return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
     }
-
 }

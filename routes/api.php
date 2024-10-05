@@ -94,6 +94,7 @@ Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']
 Route::apiResource('ec', EcController::class);
 Route::get('/ec/getById/{ue_id}', [EcController::class, 'getByUeId']);
 Route::get('/ec/getByEnsegnantId/{enseignant_id}', [EcController::class, 'getByEnsegnantId']);
+Route::get('/ec/getByEnsegnantIdAndAU/{enseignant_id}/{au_id}', [EcController::class, 'getByEnsegnantIdAndAU']);
 Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId']);
 
 

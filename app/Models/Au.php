@@ -23,4 +23,8 @@ class Au extends Model
     {
         return $this->hasMany(Mention::class);
     }
+    public function ec()
+    {
+        return $this->hasMany(Ec::class);
+    }
 }
