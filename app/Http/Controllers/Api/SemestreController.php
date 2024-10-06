@@ -110,4 +110,11 @@ class SemestreController extends Controller
 
         return response()->json(['message' => 'Étudiant retiré !']);
     }
+    public function getSemestreByEtudiantId($etudiantId)
+{
+    $semestres = Semestre::whereHas('etudiant', function ($query) use ($etudiantId) {
+        $query->where('etudiant_id', $etudiantId);
+    })->get();
+    return response()->json($semestres, 200);
+}
 }

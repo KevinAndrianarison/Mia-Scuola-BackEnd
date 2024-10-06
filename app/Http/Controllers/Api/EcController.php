@@ -115,4 +115,5 @@ class EcController extends Controller
         $ec->save();
         return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
     }
+    
 }

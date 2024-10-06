@@ -81,6 +81,7 @@ Route::put('/parcours/{id}/clearEnseignant', [ParcourController::class, 'clearEn
 
 Route::apiResource('semestre', SemestreController::class);
 Route::get('/semestre/getById/{parcour_id}', [SemestreController::class, 'getByParcoursId']);
+Route::get('/semestre/getSemestreByEtudiantId/{etudiantId}', [SemestreController::class, 'getSemestreByEtudiantId']);
 Route::get('/semestres/{semestreId}/etudiants', [SemestreController::class, 'showEtudiants']);
 Route::post('/semestres/addEtudiant', [SemestreController::class, 'addEtudiant']);
 Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreController::class, 'removeEtudiant']);
