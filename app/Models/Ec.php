@@ -25,4 +25,8 @@ class Ec extends Model
     {
         return $this->hasMany(Cour::class);
     }
+    public function note()
+    {
+        return $this->hasMany(Note::class);
+    }
 }

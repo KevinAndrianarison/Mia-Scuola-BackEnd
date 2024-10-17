@@ -18,4 +18,8 @@ class Etudiant extends Model
     {
         return $this->belongsToMany(Semestre::class, 'etudiant_semestre', 'etudiant_id', 'semestre_id');
     }
+    public function note()
+    {
+        return $this->hasMany(Note::class);
+    }
 }

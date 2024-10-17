@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\CourController;
 use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
+use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SemestreController;
 use App\Http\Controllers\Api\UeController;
@@ -104,6 +105,9 @@ Route::apiResource('cours', CourController::class);
 Route::get('cours/file/{filename}', [CourController::class, 'downloadCours'])->name('file.download');
 Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 
+
+
+Route::apiResource('note', NoteController::class);
 
 
 
