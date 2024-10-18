@@ -85,7 +85,8 @@ class SemestreController extends Controller
     public function showEtudiants($semestreId)
     {
         $semestre = Semestre::findOrFail($semestreId);
-        $etudiants = $semestre->etudiant()->with('user')->get();
+        //$etudiants = $semestre->etudiant()->with('user')->get();
+        $etudiants = $semestre->etudiant()->with(['user', 'note.ec'])->get();
         return response()->json($etudiants);
     }
 
@@ -111,10 +112,10 @@ class SemestreController extends Controller
         return response()->json(['message' => 'Étudiant retiré !']);
     }
     public function getSemestreByEtudiantId($etudiantId)
-{
-    $semestres = Semestre::whereHas('etudiant', function ($query) use ($etudiantId) {
-        $query->where('etudiant_id', $etudiantId);
-    })->get();
-    return response()->json($semestres, 200);
-}
+    {
+        $semestres = Semestre::whereHas('etudiant', function ($query) use ($etudiantId) {
+            $query->where('etudiant_id', $etudiantId);
+        })->get();
+        return response()->json($semestres, 200);
+    }
 }

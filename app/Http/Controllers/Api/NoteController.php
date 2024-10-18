@@ -31,8 +31,17 @@ class NoteController extends Controller
             'ec_id' => 'required|exists:ecs,id',
         ]);
 
-        $note = Note::create($request->all());
-        return response()->json($note, 201);
+        $note = Note::where('etudiant_id', $request->etudiant_id)
+            ->where('ec_id', $request->ec_id)
+            ->first();
+
+        if ($note) {
+            $note->update($request->only('note'));
+            return response()->json($note);
+        } else {
+            $note = Note::create($request->all());
+            return response()->json($note);
+        }
     }
 
     /**
