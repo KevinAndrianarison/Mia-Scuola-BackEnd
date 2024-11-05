@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\EtablissementController;
 use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
+use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\CourController;
 use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EnseignantController;
@@ -109,7 +110,9 @@ Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 
 Route::apiResource('note', NoteController::class);
 
-
+Route::get('/users', [ChatController::class, 'getUsers']);
+Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
+Route::post('/send-message', [ChatController::class, 'sendMessage']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('user/profil', [AuthController::class, 'profil']);
