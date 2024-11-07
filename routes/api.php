@@ -34,7 +34,7 @@ Route::put('user/changemdp/{id}', [AuthController::class, 'changeMdp']);
 
 
 Route::apiResource('etablissement', EtablissementController::class);
-Route::get('etablissement/image/{filename}', [EtablissementController::class, 'downloadImage'])->name('file.download');
+// Route::get('etablissement/image/{filename}', [EtablissementController::class, 'downloadImage'])->name('file.download');
 
 
 Route::apiResource('directeur', DirecteurController::class);
@@ -111,7 +111,7 @@ Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 Route::apiResource('note', NoteController::class);
 
 Route::get('/users', [ChatController::class, 'getUsers']);
-Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
+Route::get('/messages/{userId1}/{userId2}', [ChatController::class, 'fetchMessages']);
 Route::post('/send-message', [ChatController::class, 'sendMessage']);
 
 Route::middleware('auth:api')->group(function () {

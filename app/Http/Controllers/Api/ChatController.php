@@ -54,20 +54,26 @@ class ChatController extends Controller
     {
         return response()->json(User::all());
     }
-    public function getMessages($userId)
+    public function fetchMessages($userId1, $userId2)
     {
-        $messages = Message::where('user_id', $userId)->with('user')->get();
+        $messages = Message::where(function ($query) use ($userId1, $userId2) {
+            $query->where('sender_id', $userId1)->where('receiver_id', $userId2);
+        })->orWhere(function ($query) use ($userId1, $userId2) {
+            $query->where('sender_id', $userId2)->where('receiver_id', $userId1);
+        })->orderBy('created_at', 'asc')->get();
         return response()->json($messages);
     }
+
+
     public function sendMessage(Request $request)
     {
         $message = Message::create([
-            'user_id' => $request->user_id,
+            'sender_id' => $request->sender_id,
+            'receiver_id' => $request->receiver_id,
             'message' => $request->message,
         ]);
 
         broadcast(new MessageSent($message))->toOthers();
-
-        return response()->json(['message' => $message], 201);
+        return response()->json($message);
     }
 }
