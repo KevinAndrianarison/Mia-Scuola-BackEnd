@@ -21,7 +21,7 @@ class MessageSent implements ShouldBroadcast
     public $message;
 
     /**
-     * Create a new event instance.
+     * Create a new event instance. 
      *
      * @param \App\Models\Message $message
      * @return void

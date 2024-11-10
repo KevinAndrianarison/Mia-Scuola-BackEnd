@@ -10,7 +10,10 @@ use App\Http\Controllers\Api\EtablissementController;
 use App\Http\Controllers\Api\MentionController;
 use App\Http\Controllers\Api\NiveauController;
 use App\Http\Controllers\Api\AgentscolariteController;
+use App\Http\Controllers\Api\AnnonceController;
+use App\Http\Controllers\Api\CategoriController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\ComController;
 use App\Http\Controllers\Api\CourController;
 use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EnseignantController;
@@ -106,9 +109,17 @@ Route::apiResource('cours', CourController::class);
 Route::get('cours/file/{filename}', [CourController::class, 'downloadCours'])->name('file.download');
 Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 
-
+Route::apiResource('categoris', CategoriController::class);
 
 Route::apiResource('note', NoteController::class);
+
+Route::apiResource('annonce', AnnonceController::class);
+Route::get('annonce/files/{filename}', [AnnonceController::class, 'downloadFile'])->name('files.download');
+Route::get('annonces/categorie/{categori_id}', [AnnonceController::class, 'getAnnonceByIdCategorie']);
+
+Route::apiResource('coms', ComController::class);
+Route::get('coms/annonce/{annonce_id}', [ComController::class, 'getAnnonceByIdAnnonce']);
+
 
 Route::get('/users', [ChatController::class, 'getUsers']);
 Route::get('/messages/{userId1}/{userId2}', [ChatController::class, 'fetchMessages']);
