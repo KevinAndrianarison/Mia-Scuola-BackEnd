@@ -116,6 +116,8 @@ Route::apiResource('note', NoteController::class);
 Route::apiResource('annonce', AnnonceController::class);
 Route::get('annonce/files/{filename}', [AnnonceController::class, 'downloadFile'])->name('files.download');
 Route::get('annonces/categorie/{categori_id}', [AnnonceController::class, 'getAnnonceByIdCategorie']);
+Route::post('/annonces/{annonce}/like', [AnnonceController::class, 'toggleLike']);
+
 
 Route::apiResource('coms', ComController::class);
 Route::get('coms/annonce/{annonce_id}', [ComController::class, 'getAnnonceByIdAnnonce']);

@@ -9,6 +9,7 @@ class Annonce extends Model
 {
     use HasFactory;
     protected $fillable = ['titre', 'description', 'fichier_nom', 'user_id', 'categori_id'];
+    protected $appends = ['liked_by_user'];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -20,5 +21,14 @@ class Annonce extends Model
     public function com()
     {
         return $this->hasMany(Com::class);
+    }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+    public function getLikedByUserAttribute()
+    {
+        $userId = request()->query('user_id');
+        return $this->likes()->where('user_id', $userId)->exists();
     }
 }

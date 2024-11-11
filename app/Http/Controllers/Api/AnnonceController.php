@@ -14,10 +14,11 @@ class AnnonceController extends Controller
      */
     public function index()
     {
-        //
         return response()->json(
             Annonce::with('user')
-                ->with('categori')
+                ->with("categori")
+                ->with("com")
+                ->withCount('likes')
                 ->get(),
             200
         );
@@ -57,13 +58,12 @@ class AnnonceController extends Controller
     public function show(string $id)
     {
         //
-        $annonce = Annonce::find($id);
-
-        if ($annonce) {
-            return response()->json($annonce, 200);
-        } else {
-            return response()->json(['error' => 'Annonce introuvable !'], 404);
-        }
+        $annonce = Annonce::with('user')
+            ->with("categori")
+            ->with("com")
+            ->withCount('likes')
+            ->findOrFail($id);
+        return response()->json($annonce, 200);
     }
 
     /**
@@ -132,6 +132,8 @@ class AnnonceController extends Controller
         $annonces = Annonce::where('categori_id', $categori_id)
             ->with('user')
             ->with('categori')
+            ->with("com")
+            ->withCount('likes')
             ->get();
 
         if ($annonces->isEmpty()) {
@@ -140,4 +142,23 @@ class AnnonceController extends Controller
 
         return response()->json($annonces, 200);
     }
-}
+
+    public function toggleLike(Request $request, Annonce $annonce)
+    {
+        $userId = $request->input('user_id');
+    
+        if (!$userId) {
+            return response()->json(['error' => 'User ID is required'], 400);
+        }
+    
+        $like = $annonce->likes()->where('user_id', $userId)->first();
+    
+        if ($like) {
+            $like->delete();
+            return response()->json(['liked' => false, 'message' => 'Like removed!']);
+        } else {
+            $annonce->likes()->create(['user_id' => $userId]);
+            return response()->json(['liked' => true, 'message' => 'Liked successfully!']);
+        }
+    }
+}    
