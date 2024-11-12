@@ -76,10 +76,6 @@ class ComController extends Controller
             ->with('user')
             ->get();
 
-        if ($coms->isEmpty()) {
-            return response()->json(['message' => 'Aucun commentaire trouvée pour cette catégorie !'], 404);
-        }
-
         return response()->json($coms, 200);
     }
 }

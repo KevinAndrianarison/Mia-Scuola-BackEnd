@@ -15,9 +15,7 @@ class AnnonceController extends Controller
     public function index()
     {
         return response()->json(
-            Annonce::with('user')
-                ->with("categori")
-                ->with("com")
+            Annonce::with(['user', 'categori', 'com', 'likes.user'])
                 ->withCount('likes')
                 ->get(),
             200
@@ -146,13 +144,13 @@ class AnnonceController extends Controller
     public function toggleLike(Request $request, Annonce $annonce)
     {
         $userId = $request->input('user_id');
-    
+
         if (!$userId) {
             return response()->json(['error' => 'User ID is required'], 400);
         }
-    
+
         $like = $annonce->likes()->where('user_id', $userId)->first();
-    
+
         if ($like) {
             $like->delete();
             return response()->json(['liked' => false, 'message' => 'Like removed!']);
@@ -161,4 +159,4 @@ class AnnonceController extends Controller
             return response()->json(['liked' => true, 'message' => 'Liked successfully!']);
         }
     }
-}    
+}
