@@ -131,6 +131,7 @@ class AnnonceController extends Controller
             ->with('user')
             ->with('categori')
             ->with("com")
+            ->with("likes.user")
             ->withCount('likes')
             ->get();
 
