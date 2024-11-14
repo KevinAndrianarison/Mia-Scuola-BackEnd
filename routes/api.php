@@ -99,6 +99,7 @@ Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']
 
 Route::apiResource('ec', EcController::class);
 Route::get('/ec/getById/{ue_id}', [EcController::class, 'getByUeId']);
+Route::get('/ec/getBySemestre/{semestre_id}', [EcController::class, 'getBySemestre']);
 Route::get('/ec/getByEnsegnantId/{enseignant_id}', [EcController::class, 'getByEnsegnantId']);
 Route::get('/ec/getByEnsegnantIdAndAU/{enseignant_id}/{au_id}', [EcController::class, 'getByEnsegnantIdAndAU']);
 Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId']);
@@ -116,6 +117,7 @@ Route::apiResource('note', NoteController::class);
 Route::apiResource('annonce', AnnonceController::class);
 Route::get('annonce/files/{filename}', [AnnonceController::class, 'downloadFile'])->name('files.download');
 Route::get('annonces/categorie/{categori_id}', [AnnonceController::class, 'getAnnonceByIdCategorie']);
+Route::get('annonces/user/{user_id}', [AnnonceController::class, 'getAnnonceByIdUser']);
 Route::post('/annonces/{annonce}/like', [AnnonceController::class, 'toggleLike']);
 
 

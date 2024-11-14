@@ -15,6 +15,7 @@ class EcController extends Controller
     {
         //
         return response()->json(Ec::with('ue')
+            ->with('user')
             ->get(), 200);
     }
 
@@ -90,8 +91,16 @@ class EcController extends Controller
 
     public function getByUeId($ue_id)
     {
-        $ec = Ec::where('ue_id', $ue_id)->with('enseignant')->get();
+        $ec = Ec::where('ue_id', $ue_id)->with('enseignant')->with('enseignant.user')->get();
         return response()->json($ec, 200);
+    }
+
+    public function getBySemestre($semestre_id)
+    {
+        $ecs = Ec::whereHas('ue.semestre', function ($query) use ($semestre_id) {
+            $query->where('id', $semestre_id);
+        })->with(['enseignant.user'])->get();
+        return response()->json($ecs, 200);
     }
 
     public function getByEnsegnantId($enseignant_id)
@@ -115,5 +124,4 @@ class EcController extends Controller
         $ec->save();
         return response()->json(['message' => 'L\'enseignant a été dissocié avec succès !'], 200);
     }
-    
 }

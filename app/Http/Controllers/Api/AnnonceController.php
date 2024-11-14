@@ -142,6 +142,19 @@ class AnnonceController extends Controller
         return response()->json($annonces, 200);
     }
 
+    public function getAnnonceByIdUser($user_id)
+    {
+        $annonces = Annonce::where('user_id', $user_id)
+            ->with('user')
+            ->with('categori')
+            ->with("com")
+            ->with("likes.user")
+            ->withCount('likes')
+            ->get();
+
+        return response()->json($annonces, 200);
+    }
+
     public function toggleLike(Request $request, Annonce $annonce)
     {
         $userId = $request->input('user_id');
