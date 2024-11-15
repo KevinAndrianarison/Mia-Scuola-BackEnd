@@ -92,7 +92,6 @@ Route::post('/semestres/addEtudiant', [SemestreController::class, 'addEtudiant']
 Route::delete('/semestres/{semestreId}/removeEtudiant/{etudiantId}', [SemestreController::class, 'removeEtudiant']);
 
 
-
 Route::apiResource('ue', UeController::class);
 Route::get('/ue/getById/{semestre_id}', [UeController::class, 'getBySemestreId']);
 
@@ -103,7 +102,7 @@ Route::get('/ec/getBySemestre/{semestre_id}', [EcController::class, 'getBySemest
 Route::get('/ec/getByEnsegnantId/{enseignant_id}', [EcController::class, 'getByEnsegnantId']);
 Route::get('/ec/getByEnsegnantIdAndAU/{enseignant_id}/{au_id}', [EcController::class, 'getByEnsegnantIdAndAU']);
 Route::put('/ec/{id}/clearEnseignant', [EcController::class, 'clearEnseignantId']);
-
+Route::put('/ec/{ecId}/etudiant/{etudiantId}/note', [EcController::class, 'updateNote']);
 
 
 Route::apiResource('cours', CourController::class);
