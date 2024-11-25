@@ -29,6 +29,10 @@ class Ec extends Model
     {
         return $this->hasMany(Note::class);
     }
+    public function edt()
+    {
+        return $this->hasMany(Edt::class);
+    }
     public function etudiant()
     {
         return $this->belongsToMany(Etudiant::class, 'ec_etudiant')->withPivot('noteEc')->withTimestamps();

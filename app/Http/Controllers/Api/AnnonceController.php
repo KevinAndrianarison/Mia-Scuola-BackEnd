@@ -135,10 +135,6 @@ class AnnonceController extends Controller
             ->withCount('likes')
             ->get();
 
-        if ($annonces->isEmpty()) {
-            return response()->json(['message' => 'Aucune annonce trouvée pour cette catégorie !'], 404);
-        }
-
         return response()->json($annonces, 200);
     }
 

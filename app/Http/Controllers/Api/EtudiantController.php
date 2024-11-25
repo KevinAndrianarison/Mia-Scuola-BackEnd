@@ -51,11 +51,98 @@ class EtudiantController extends Controller
     /**
      * Display the specified resource.
      */
+    // public function show($id)
+    // {
+    //     //
+    //     $etudiant = Etudiant::with('ec')
+    //     ->with('ec.ue')
+    //     ->with('ec.au')
+    //     ->with('ec.ue.semestre')
+    //     ->findOrFail($id);
+    //     return response()->json($etudiant->load('user'), 200);
+    // }
+
     public function show($id)
     {
-        //
-        $etudiant = Etudiant::findOrFail($id);
-        return response()->json($etudiant->load('user'), 200);
+        $etudiant = Etudiant::with([
+            'ec',
+            'ec.ue',
+            'ec.ue.semestre',
+            'ec.au',
+            'user'
+        ])->findOrFail($id);
+
+        $response = $this->structureSemestreAndUe($etudiant);
+
+        return response()->json($response, 200);
+    }
+    private function structureSemestreAndUe($etudiant)
+    {
+        $semestres = [];
+        $uesCreditsNotes = [];
+
+        foreach ($etudiant->ec as $ec) {
+            $semestreId = $ec->ue->semestre->id ?? null;
+
+            if ($semestreId) {
+                if (!isset($semestres[$semestreId])) {
+                    $semestres[$semestreId] = [
+                        'id' => $semestreId,
+                        'nom_semestre' => $ec->ue->semestre->nom_semestre,
+                        'ues' => []
+                    ];
+                }
+
+                $ueId = $ec->ue_id;
+
+                if (!isset($semestres[$semestreId]['ues'][$ueId])) {
+                    $semestres[$semestreId]['ues'][$ueId] = [
+                        'id' => $ueId,
+                        'nom_ue' => $ec->ue->nom_ue,
+                        'credit' => $ec->ue->credit_ue,
+                        'ecs' => []
+                    ];
+                }
+
+                $semestres[$semestreId]['ues'][$ueId]['ecs'][] = [
+                    'id' => $ec->id,
+                    'nom_ec' => $ec->nom_ec,
+                    'volume_et' => $ec->volume_et,
+                    'volume_ed' => $ec->volume_ed,
+                    'volume_tp' => $ec->volume_tp,
+                    'noteEc' => $ec->pivot->noteEc ?? null,
+                    'au' => $ec->au ?? null
+                ];
+            }
+        }
+        foreach ($semestres as &$semestre) {
+            foreach ($semestre['ues'] as &$ue) {
+                $notesEc = array_column($ue['ecs'], 'noteEc');
+                $notesValides = array_filter($notesEc, fn($note) => !is_null($note));
+                $ue['moyenne_ue'] = !empty($notesValides)
+                    ? round(array_sum($notesValides) / count($notesValides), 2)
+                    : null;
+                if (!is_null($ue['moyenne_ue'])) {
+                    $uesCreditsNotes[] = [
+                        'note_ponderee' => $ue['moyenne_ue'] * $ue['credit'],
+                        'credit' => $ue['credit']
+                    ];
+                }
+            }
+
+            $semestre['ues'] = array_values($semestre['ues']);
+        }
+        $totalCredits = array_sum(array_column($uesCreditsNotes, 'credit'));
+        $totalNotesPonderees = array_sum(array_column($uesCreditsNotes, 'note_ponderee'));
+
+        $moyenneGenerale = $totalCredits > 0 ? round($totalNotesPonderees / $totalCredits, 2) : null;
+
+        return [
+            'etudiant' => $etudiant,
+            'user' => $etudiant->user,
+            'semestres' => array_values($semestres),
+            'moyenne_generale' => $moyenneGenerale
+        ];
     }
 
     /**

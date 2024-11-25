@@ -26,4 +26,8 @@ class Enseignant extends Model
     {
         return $this->hasMany(Ec::class);
     }
+    public function edt()
+    {
+        return $this->hasMany(Edt::class);
+    }
 }
