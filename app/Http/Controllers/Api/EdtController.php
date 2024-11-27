@@ -14,7 +14,7 @@ class EdtController extends Controller
     public function index()
     {
         //
-        $edts = Edt::with(['jour', 'heure', 'enseignant', 'salle', 'ec', "groupedt_id"])->get();
+        $edts = Edt::with(['jour', 'heure', 'enseignant', 'salle', 'ec', "groupedt"])->get();
         return response()->json($edts);
     }
 
@@ -43,7 +43,7 @@ class EdtController extends Controller
     public function show(string $id)
     {
         //
-        $edt = Edt::with(['jour', 'heure', 'enseignant', 'salle', 'ec', "groupedt_id"])->find($id);
+        $edt = Edt::with(['jour', 'heure', 'enseignant', 'salle', 'ec', "groupedt"])->find($id);
         return response()->json($edt);
     }
 

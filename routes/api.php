@@ -72,6 +72,8 @@ Route::apiResource('edt', EdtController::class);
 
 
 Route::apiResource('grpedt', GroupedtController::class);
+Route::get('/grpedtGetByAU/{au_id}', [GroupedtController::class, 'getByIdAU']);
+
 
 
 Route::apiResource('niveau', NiveauController::class);

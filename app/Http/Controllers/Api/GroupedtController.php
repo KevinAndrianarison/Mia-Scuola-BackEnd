@@ -14,7 +14,7 @@ class GroupedtController extends Controller
     public function index()
     {
         //
-        $group = Groupedt::with(['semestre_id', 'parcour_id', 'au_id'])->get();
+        $group = Groupedt::with(['semestre', 'parcour', 'au', 'edt'])->get();
         return response()->json($group);
     }
 
@@ -40,7 +40,7 @@ class GroupedtController extends Controller
     public function show(string $id)
     {
         //
-        $group = Groupedt::with(['semestre_id', 'parcour_id', 'au_id'])->find($id);
+        $group = Groupedt::with(['semestre', 'parcour', 'au', 'edt'])->find($id);
         return response()->json($group);
     }
 
@@ -53,13 +53,24 @@ class GroupedtController extends Controller
         $grp = Groupedt::find($id);
         $validated = $request->validate([
             'au_id' => 'exists:aus,id',
-            'heure_id' => 'exists:heures,id',
-            'enseignant_id' => 'exists:enseignants,id',
+            'parcour_id' => 'exists:parcours,id',
+            'semestre_id' => 'exists:semestres,id',
 
         ]);
 
         $grp->update($validated);
         return response()->json($grp);
+    }
+
+    public function getByIdAU($au_id,)
+    {
+        $grp = Groupedt::where('au_id', $au_id)
+            ->with('au')
+            ->with('parcour')
+            ->with('semestre')
+            ->with('edt')
+            ->get();
+        return response()->json($grp, 200);
     }
 
     /**

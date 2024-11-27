@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('enseignant_id')->constrained();
             $table->foreignId('salle_id')->constrained();
             $table->foreignId('ec_id')->constrained();
-            $table->foreignId('groupedt_id')->constrained();
+            $table->foreignId('groupedt_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
