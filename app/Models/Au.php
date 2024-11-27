@@ -27,4 +27,9 @@ class Au extends Model
     {
         return $this->hasMany(Ec::class);
     }
+
+    public function groupedt()
+    {
+        return $this->hasMany(Groupedt::class);
+    }
 }

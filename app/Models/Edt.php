@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Edt extends Model
 {
     use HasFactory;
-    protected $fillable = ['jour_id', 'heure_id', 'enseignant_id', 'salle_id', 'ec_id'];
+    protected $fillable = ['jour_id', 'heure_id', 'enseignant_id', 'salle_id', 'ec_id', 'groupedt_id'];
     public function jour()
     {
         return $this->belongsTo(Jour::class);
@@ -28,5 +28,9 @@ class Edt extends Model
     public function ec()
     {
         return $this->belongsTo(Ec::class);
+    }
+    public function groupedt()
+    {
+        return $this->belongsTo(Groupedt::class);
     }
 }

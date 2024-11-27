@@ -16,8 +16,10 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\ComController;
 use App\Http\Controllers\Api\CourController;
 use App\Http\Controllers\Api\EcController;
+use App\Http\Controllers\Api\EdtController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
+use App\Http\Controllers\Api\GroupedtController;
 use App\Http\Controllers\Api\HeureController;
 use App\Http\Controllers\Api\JourController;
 use App\Http\Controllers\Api\NoteController;
@@ -65,6 +67,11 @@ Route::apiResource('au', AuController::class);
 
 Route::apiResource('salle', SalleController::class);
 
+
+Route::apiResource('edt', EdtController::class);
+
+
+Route::apiResource('grpedt', GroupedtController::class);
 
 
 Route::apiResource('niveau', NiveauController::class);

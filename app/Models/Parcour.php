@@ -26,4 +26,8 @@ class Parcour extends Model
     {
         return $this->hasMany(Semestre::class);
     }
+    public function groupedt()
+    {
+        return $this->hasMany(Groupedt::class);
+    }
 }
