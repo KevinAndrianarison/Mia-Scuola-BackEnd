@@ -27,6 +27,10 @@ class Au extends Model
     {
         return $this->hasMany(Ec::class);
     }
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 
     public function groupedt()
     {

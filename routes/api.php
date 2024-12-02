@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SalleController;
 use App\Http\Controllers\Api\SemestreController;
+use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UeController;
 
 Route::post('user/register', [AuthController::class, 'register']);
@@ -69,6 +70,9 @@ Route::apiResource('salle', SalleController::class);
 
 
 Route::apiResource('edt', EdtController::class);
+
+
+Route::apiResource('transaction', TransactionController::class);
 
 
 Route::apiResource('grpedt', GroupedtController::class);
