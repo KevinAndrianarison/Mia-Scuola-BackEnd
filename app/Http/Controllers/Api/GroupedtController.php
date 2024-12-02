@@ -69,6 +69,10 @@ class GroupedtController extends Controller
             ->with('parcour')
             ->with('semestre')
             ->with('edt')
+            ->with('edt.enseignant')
+            ->with('edt.heure')
+            ->with('edt.salle')
+            ->with('edt.jour')
             ->get();
         return response()->json($grp, 200);
     }
