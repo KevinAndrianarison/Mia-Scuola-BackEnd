@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nom_niveau')->nullable();
             $table->string('abr_niveau')->nullable();
+            $table->string('montant_droit')->nullable();
             $table->foreignId('au_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

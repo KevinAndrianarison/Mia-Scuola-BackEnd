@@ -26,6 +26,7 @@ class NiveauController extends Controller
         $request->validate([
             'nom_niveau' => 'nullable',
             'abr_niveau' => 'nullable',
+            'montant_droit' => 'nullable',
             'au_id' => 'required|exists:aus,id'
 
         ]);
@@ -33,7 +34,7 @@ class NiveauController extends Controller
         $existing = Niveau::where('abr_niveau', $request->abr_niveau)
             ->where('au_id', $request->au_id)
             ->exists();
-            
+
         if ($existing) {
             return response()->json(['message' => 'Niveau déjà existant !'], 400);
         }
@@ -61,6 +62,7 @@ class NiveauController extends Controller
         $request->validate([
             'nom_niveau' => 'nullable',
             'abr_niveau' => 'nullable',
+            'montant_droit' => 'nullable',
             'au_id' => 'required|exists:aus,id'
         ]);
         $niveau->update($request->all());
