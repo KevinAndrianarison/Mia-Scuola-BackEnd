@@ -67,6 +67,15 @@ class TransactionController extends Controller
         return response()->json($trans);
     }
 
+    public function getByIdAU($au_id,)
+    {
+        $trans = Transaction::where('au_id', $au_id)
+            ->with('au')
+            ->with('user')
+            ->get();
+        return response()->json($trans, 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

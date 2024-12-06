@@ -73,6 +73,8 @@ Route::apiResource('edt', EdtController::class);
 
 
 Route::apiResource('transaction', TransactionController::class);
+Route::get('/transactionGetByAU/{au_id}', [TransactionController::class, 'getByIdAU']);
+
 
 
 Route::apiResource('grpedt', GroupedtController::class);
