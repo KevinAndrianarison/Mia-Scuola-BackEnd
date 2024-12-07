@@ -71,7 +71,9 @@ class TransactionController extends Controller
     {
         $trans = Transaction::where('au_id', $au_id)
             ->with('au')
+            ->with('au.etablissement')
             ->with('user')
+            ->with('user.agentscolarite')
             ->get();
         return response()->json($trans, 200);
     }
