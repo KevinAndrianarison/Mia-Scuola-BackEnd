@@ -8,6 +8,7 @@ use App\Events\MessageSent;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Pusher\Pusher;
 
 class ChatController extends Controller
 {
@@ -68,13 +69,49 @@ class ChatController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $message = Message::create([
-            'sender_id' => $request->sender_id,
-            'receiver_id' => $request->receiver_id,
-            'message' => $request->message,
+        $channelName = $this->generateChannelName($request->sender_id, $request->receiver_id);
+        $validatedData = $request->validate([
+            'sender_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
+            'fichier' => 'nullable',
+            'message' => 'nullable',
         ]);
 
-        broadcast(new MessageSent($message))->toOthers();
+        $fileName = null;
+        $path = null;
+
+        if ($request->hasFile('fichier')) {
+            $file = $request->file('fichier');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/message', $fileName);
+        }
+
+        $message = Message::create([
+            'sender_id' => $validatedData['sender_id'],
+            'receiver_id' => $validatedData['receiver_id'],
+            'message' => $validatedData['message'],
+            'fichierName' => $fileName
+        ]);
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]);
+        $pusher->trigger($channelName, 'message-sent', $message);
         return response()->json($message);
+    }
+    private function generateChannelName($userId1, $userId2)
+    {
+        $userIds = [$userId1, $userId2];
+        sort($userIds);
+        return 'Chat-' . implode('-', $userIds);
+    }
+
+    public function downloadFile($filename)
+    {
+        $path = storage_path('app/public/message/' . $filename);
+        if (file_exists($path)) {
+            $mimeType = mime_content_type($path);
+            return response()->download($path, $filename, [
+                'Content-Type' => $mimeType,
+            ]);
+        }
+        return abort(404);
     }
 }
