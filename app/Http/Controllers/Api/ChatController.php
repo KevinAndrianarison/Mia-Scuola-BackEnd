@@ -114,4 +114,25 @@ class ChatController extends Controller
         }
         return abort(404);
     }
+    public function destroyMessage(Request $request, $id)
+    {
+        $message = Message::find($id);
+
+        if (!$message) {
+            return response()->json(['error' => 'Message non trouvé.'], 404);
+        }
+        if ($message->fichierName) {
+            $filePath = storage_path('app/public/message/' . $message->fichierName);
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        $message->delete();
+        $channelName = $this->generateChannelName($message->sender_id, $message->receiver_id);
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]);
+        $pusher->trigger($channelName, 'message-deleted', ['message_id' => $id]);
+
+        return response()->json(['success' => 'Message supprimé avec succès !']);
+    }
 }
