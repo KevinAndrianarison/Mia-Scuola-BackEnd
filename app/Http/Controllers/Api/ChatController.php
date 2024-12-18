@@ -47,10 +47,7 @@ class ChatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 
     public function getUsers()
     {
@@ -65,7 +62,6 @@ class ChatController extends Controller
         })->orderBy('created_at', 'asc')->get();
         return response()->json($messages);
     }
-
 
     public function sendMessage(Request $request)
     {
@@ -92,10 +88,15 @@ class ChatController extends Controller
             'message' => $validatedData['message'],
             'fichierName' => $fileName
         ]);
+
         $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]);
         $pusher->trigger($channelName, 'message-sent', $message);
+
         return response()->json($message);
     }
+
+
+
     private function generateChannelName($userId1, $userId2)
     {
         $userIds = [$userId1, $userId2];
@@ -114,6 +115,21 @@ class ChatController extends Controller
         }
         return abort(404);
     }
+
+
+    public function fetchLastMessage($userId1, $userId2)
+    {
+        $message = Message::where(function ($query) use ($userId1, $userId2) {
+            $query->where('sender_id', $userId1)->where('receiver_id', $userId2);
+        })->orWhere(function ($query) use ($userId1, $userId2) {
+            $query->where('sender_id', $userId2)->where('receiver_id', $userId1);
+        })->orderBy('created_at', 'desc')->first();
+
+        return response()->json($message);
+    }
+
+
+
     public function destroyMessage(Request $request, $id)
     {
         $message = Message::find($id);
@@ -134,5 +150,24 @@ class ChatController extends Controller
         $pusher->trigger($channelName, 'message-deleted', ['message_id' => $id]);
 
         return response()->json(['success' => 'Message supprimé avec succès !']);
+    }
+
+
+
+    public function destroy($selectedUserId)
+    {
+        $userId = auth()->user()->id;
+        Message::where(function ($query) use ($userId, $selectedUserId) {
+            $query->where('sender_id', $userId)->where('receiver_id', $selectedUserId);
+        })->orWhere(function ($query) use ($userId, $selectedUserId) {
+            $query->where('sender_id', $selectedUserId)->where('receiver_id', $userId);
+        })->delete();
+
+        $channelName = "Chat-{$userId}-{$selectedUserId}";
+
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]);
+        $pusher->trigger($channelName, 'conversation-deleted', ['userId' => $userId, 'selectedUserId' => $selectedUserId]);
+
+        return response()->json(['success' => 'Discussion supprimée avec succès!']);
     }
 }

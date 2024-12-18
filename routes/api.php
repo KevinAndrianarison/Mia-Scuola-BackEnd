@@ -154,6 +154,8 @@ Route::get('/messages/{userId1}/{userId2}', [ChatController::class, 'fetchMessag
 Route::post('/send-message', [ChatController::class, 'sendMessage']);
 Route::get('/messages/{filename}', [ChatController::class, 'downloadFile'])->name('Files.download');
 Route::delete('/messages/{id}', [ChatController::class, 'destroyMessage']);
+Route::get('last-message/{userId1}/{userId2}', [ChatController::class, 'fetchLastMessage']);
+Route::delete('conversations/{selectedUserId}', [ChatController::class, 'destroy']);
 
 
 
