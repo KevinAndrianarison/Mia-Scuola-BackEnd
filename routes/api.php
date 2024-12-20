@@ -156,6 +156,8 @@ Route::get('/messages/{filename}', [ChatController::class, 'downloadFile'])->nam
 Route::delete('/messages/{id}', [ChatController::class, 'destroyMessage']);
 Route::get('last-message/{userId1}/{userId2}', [ChatController::class, 'fetchLastMessage']);
 Route::delete('conversations/{selectedUserId}', [ChatController::class, 'destroy']);
+Route::delete('conversation/{userId}/{selectedUserId}', [ChatController::class, 'destroyConversation']);
+
 
 
 

@@ -170,4 +170,29 @@ class ChatController extends Controller
 
         return response()->json(['success' => 'Discussion supprimée avec succès!']);
     }
+
+
+    public function destroyConversation(Request $request, $userId, $selectedUserId)
+    {
+        Message::where(function ($query) use ($userId, $selectedUserId) {
+            $query->where('sender_id', $userId)
+                ->where('receiver_id', $selectedUserId);
+        })->orWhere(function ($query) use ($userId, $selectedUserId) {
+            $query->where('sender_id', $selectedUserId)
+                ->where('receiver_id', $userId);
+        })->delete();
+        $channelName = $this->generateChannelName($userId, $selectedUserId);
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]
+        );
+        $pusher->trigger($channelName, 'conversation-deleted', [
+            'userId' => $userId,
+            'selectedUserId' => $selectedUserId
+        ]);
+
+        return response()->json(['success' => 'Discussion supprimée avec succès!']);
+    }
 }
