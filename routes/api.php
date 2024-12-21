@@ -152,6 +152,7 @@ Route::get('coms/annonce/{annonce_id}', [ComController::class, 'getAnnonceByIdAn
 Route::get('/users', [ChatController::class, 'getUsers']);
 Route::get('/messages/{userId1}/{userId2}', [ChatController::class, 'fetchMessages']);
 Route::post('/send-message', [ChatController::class, 'sendMessage']);
+Route::post('/block-message', [ChatController::class, 'updateUserBlocked']);
 Route::get('/messages/{filename}', [ChatController::class, 'downloadFile'])->name('Files.download');
 Route::delete('/messages/{id}', [ChatController::class, 'destroyMessage']);
 Route::get('last-message/{userId1}/{userId2}', [ChatController::class, 'fetchLastMessage']);

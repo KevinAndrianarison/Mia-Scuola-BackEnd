@@ -39,9 +39,21 @@ class ChatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function updateUserBlocked(Request $request)
     {
         //
+        $messages = Message::where('sender_id', $request->sender_id)
+            ->where('receiver_id', $request->receiver_id);
+
+        $channelName = $this->generateChannelName($request->sender_id, $request->receiver_id);
+        $request->validate([
+            'blockedId' => 'nullable',
+        ]);
+        $messages->update($request->all());
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), ['cluster' => env('PUSHER_APP_CLUSTER'), 'useTLS' => true]);
+        $pusher->trigger($channelName, 'block-message', $messages->get());
+        return response()->json($messages->get(), 200);
+
     }
 
     /**
@@ -71,6 +83,7 @@ class ChatController extends Controller
             'receiver_id' => 'required|exists:users,id',
             'fichier' => 'nullable',
             'message' => 'nullable',
+            'blockedId' => 'nullable',
         ]);
 
         $fileName = null;
@@ -86,6 +99,7 @@ class ChatController extends Controller
             'sender_id' => $validatedData['sender_id'],
             'receiver_id' => $validatedData['receiver_id'],
             'message' => $validatedData['message'],
+            'blockedId' => $validatedData['blockedId'],
             'fichierName' => $fileName
         ]);
 

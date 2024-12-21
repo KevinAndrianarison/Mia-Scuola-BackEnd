@@ -22,7 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'photo_name',
-        'validiter_compte'
+        'validiter_compte',
     ];
 
     public function directeur()

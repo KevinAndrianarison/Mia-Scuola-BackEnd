@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
             $table->text('message')->nullable();
             $table->text('fichierName')->nullable();
+            $table->integer('blockedId')->nullable();
             $table->timestamps();
         });
     }
