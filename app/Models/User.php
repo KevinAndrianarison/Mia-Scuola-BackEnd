@@ -61,6 +61,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Transaction::class);
     }
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_user');
+    }
+
+
+    public function messagegroupes()
+    {
+        return $this->hasMany(Messagegroupe::class);
+    }
+
 
 
     /**
