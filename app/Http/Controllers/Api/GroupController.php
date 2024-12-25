@@ -77,4 +77,22 @@ class GroupController extends Controller
 
         return response()->json($groups);
     }
+    public function deleteGroup($groupId)
+    {
+        $group = Group::findOrFail($groupId);
+        $group->delete();
+
+        return response()->json(['message' => 'Groupe supprimé avec succès']);
+    }
+
+    public function removeMember($groupId, $userId)
+    {
+        $group = Group::findOrFail($groupId);
+        if (!$group->members()->where('id', $userId)->exists()) {
+            return response()->json(['message' => 'Cet utilisateur n’est pas un membre du groupe'], 404);
+        }
+        $group->members()->detach($userId);
+
+        return response()->json(['message' => 'Membre retiré avec succès']);
+    }
 }

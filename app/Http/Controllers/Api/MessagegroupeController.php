@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\Messagegroupe;
 use Illuminate\Http\Request;
 
 class MessagegroupeController extends Controller
@@ -66,5 +67,13 @@ class MessagegroupeController extends Controller
     {
         $group = Group::findOrFail($groupId);
         return response()->json($group->messagegroupes()->with('user')->get());
+    }
+    public function deleteMessage($groupId, $messageId)
+    {
+        $message = Messagegroupe::where('group_id', $groupId)
+            ->where('id', $messageId)
+            ->firstOrFail();
+        $message->delete();
+        return response()->json(['message' => 'Message supprimé avec succès']);
     }
 }
