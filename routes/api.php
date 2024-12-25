@@ -19,9 +19,11 @@ use App\Http\Controllers\Api\EcController;
 use App\Http\Controllers\Api\EdtController;
 use App\Http\Controllers\Api\EnseignantController;
 use App\Http\Controllers\Api\EtudiantController;
+use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\GroupedtController;
 use App\Http\Controllers\Api\HeureController;
 use App\Http\Controllers\Api\JourController;
+use App\Http\Controllers\Api\MessagegroupeController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ParcourController;
 use App\Http\Controllers\Api\SalleController;
@@ -158,6 +160,14 @@ Route::delete('/messages/{id}', [ChatController::class, 'destroyMessage']);
 Route::get('last-message/{userId1}/{userId2}', [ChatController::class, 'fetchLastMessage']);
 Route::delete('conversations/{selectedUserId}', [ChatController::class, 'destroy']);
 Route::delete('conversation/{userId}/{selectedUserId}', [ChatController::class, 'destroyConversation']);
+
+
+
+Route::post('/groups', [GroupController::class, 'createGroup']);
+Route::post('/groups/{groupId}/members', [GroupController::class, 'addMember']);
+Route::post('/groups/{groupId}/messages', [MessagegroupeController::class, 'sendMessage']);
+Route::get('/groups/{groupId}/messages', [MessagegroupeController::class, 'getMessages']);
+Route::get('/users/{userId}/groups', [GroupController::class, 'getGroupsByUser']);
 
 
 
