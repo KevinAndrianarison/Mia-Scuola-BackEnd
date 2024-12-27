@@ -88,11 +88,17 @@ class GroupController extends Controller
     public function removeMember($groupId, $userId)
     {
         $group = Group::findOrFail($groupId);
-        if (!$group->members()->where('id', $userId)->exists()) {
-            return response()->json(['message' => 'Cet utilisateur n’est pas un membre du groupe'], 404);
-        }
         $group->members()->detach($userId);
 
         return response()->json(['message' => 'Membre retiré avec succès']);
+    }
+
+    public function getAllUsersByGroupId($groupId)
+    {
+        $group = Group::with('members')->findOrFail($groupId);
+
+        return response()->json(
+            $group
+        );
     }
 }

@@ -171,7 +171,7 @@ Route::get('/users/{userId}/groups', [GroupController::class, 'getGroupsByUser']
 Route::delete('/groups/{groupId}', [GroupController::class, 'deleteGroup']);
 Route::delete('/groups/{groupId}/messages/{messageId}', [MessagegroupeController::class, 'deleteMessage']);
 Route::delete('/groups/{groupId}/members/{userId}', [GroupController::class, 'removeMember']);
-
+Route::get('/groups/{id}/users', [GroupController::class, 'getAllUsersByGroupId']);
 
 
 
