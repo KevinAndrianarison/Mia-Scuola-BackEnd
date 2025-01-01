@@ -44,7 +44,6 @@ Route::put('user/changemdp/{id}', [AuthController::class, 'changeMdp']);
 
 
 Route::apiResource('etablissement', EtablissementController::class);
-// Route::get('etablissement/image/{filename}', [EtablissementController::class, 'downloadImage'])->name('file.download');
 
 
 Route::apiResource('directeur', DirecteurController::class);
@@ -172,6 +171,8 @@ Route::delete('/groups/{groupId}', [GroupController::class, 'deleteGroup']);
 Route::delete('/groups/{groupId}/messages/{messageId}', [MessagegroupeController::class, 'deleteMessage']);
 Route::delete('/groups/{groupId}/members/{userId}', [GroupController::class, 'removeMember']);
 Route::get('/groups/{id}/users', [GroupController::class, 'getAllUsersByGroupId']);
+Route::put('/putgroups/{id}', [GroupController::class, 'putGroupe']);
+Route::get('/messageGroup/{filename}', [MessagegroupeController::class, 'downloadFile'])->name('files.download');
 
 
 

@@ -77,6 +77,8 @@ class GroupController extends Controller
 
         return response()->json($groups);
     }
+
+
     public function deleteGroup($groupId)
     {
         $group = Group::findOrFail($groupId);
@@ -100,5 +102,21 @@ class GroupController extends Controller
         return response()->json(
             $group
         );
+    }
+
+    public function putGroupe(Request $request, string $id)
+    {
+        $group = Group::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'user_id' => 'nullable|exists:users,id',
+        ]);
+        $filteredData = array_filter($validated, function ($value) {
+            return $value !== null;
+        });
+
+        $group->update($filteredData);
+        return response()->json($group, 200);
     }
 }

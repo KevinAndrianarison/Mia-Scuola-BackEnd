@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('group_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->text('content')->nullable();
+            $table->text('fichierName')->nullable();
             $table->timestamps();
+
         });
     }
 

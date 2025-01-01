@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Messagegroupe extends Model
 {
     use HasFactory;
-    protected $fillable = ['group_id', 'user_id', 'content'];
+    protected $fillable = ['group_id', 'user_id', 'content', 'fichierName'];
 
     public function group()
     {
