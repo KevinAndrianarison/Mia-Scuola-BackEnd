@@ -70,13 +70,31 @@ class GroupController extends Controller
         return response()->json(['message' => 'Cet utilisateur est déjà membre !'], 400);
     }
 
+
     public function getGroupsByUser($userId)
     {
-        $user = User::findOrFail($userId);
-        $groups = $user->groups()->with('admin')->get();
+    $user = User::findOrFail($userId);
+    $groups = $user->groups()
+        ->with(['admin', 'messagegroupes' => function ($query) {
+            $query->latest()->first(); 
+        }])
+        ->get();
 
-        return response()->json($groups);
+    $groups = $groups->map(function ($group) {
+        $lastMessage = $group->messagegroupes->first();
+        if ($lastMessage) {
+            $group->lastMessage = $lastMessage->content;
+            $group->lastMessageUserId = $lastMessage->user_id;
+        } else {
+            $group->lastMessage = '✨ Démarrer la discussion';
+            $group->lastMessageUserId = null; 
+        }
+        return $group;
+    });
+
+    return response()->json($groups);
     }
+
 
 
     public function deleteGroup($groupId)
