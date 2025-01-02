@@ -73,27 +73,37 @@ class GroupController extends Controller
 
     public function getGroupsByUser($userId)
     {
-    $user = User::findOrFail($userId);
-    $groups = $user->groups()
-        ->with(['admin', 'messagegroupes' => function ($query) {
-            $query->latest()->first(); 
-        }])
-        ->get();
+        $user = User::findOrFail($userId);
+        $groups = $user->groups()
+            ->with('admin', 'messagegroupes')
+            ->get();
 
-    $groups = $groups->map(function ($group) {
-        $lastMessage = $group->messagegroupes->first();
-        if ($lastMessage) {
-            $group->lastMessage = $lastMessage->content;
-            $group->lastMessageUserId = $lastMessage->user_id;
-        } else {
-            $group->lastMessage = '✨ Démarrer la discussion';
-            $group->lastMessageUserId = null; 
-        }
-        return $group;
-    });
+        $groups = $groups->map(function ($group) {
+            $lastMessage = $group->messagegroupes->sortByDesc('created_at')->first();
+            if ($lastMessage) {
+                if ($lastMessage->fichierName) {
+                    $group->lastMessage = '📎 Un fichier a été envoyé';
+                } else {
+                    $group->lastMessage = $lastMessage->content;
+                }
+                $group->lastMessageUserId = $lastMessage->user_id;
+                $group->lastMessageCreatedAt = $lastMessage->created_at;
+            } else {
+                $group->lastMessage = '✨ Démarrer la discussion';
+                $group->lastMessageUserId = null;
+                $group->lastMessageCreatedAt = null;
+            }
+            return $group;
+        });
 
-    return response()->json($groups);
+        $sortedGroups = $groups->sortByDesc('lastMessageCreatedAt')->values();
+
+        return response()->json($sortedGroups);
     }
+
+
+
+
 
 
 
