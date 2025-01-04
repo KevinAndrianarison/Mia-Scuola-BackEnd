@@ -82,13 +82,46 @@ class SemestreController extends Controller
         return response()->json($parcours, 200);
     }
 
+    // public function showEtudiants($semestreId)
+    // {
+    //     $semestre = Semestre::findOrFail($semestreId);
+    //     //$etudiants = $semestre->etudiant()->with('user')->get();
+    //     $etudiants = $semestre->etudiant()->with(['user', 'ec'])->get();
+    //     return response()->json($etudiants);
+    // }
+
+
+    //---------------------------------------------------------------------------------------------------
     public function showEtudiants($semestreId)
     {
         $semestre = Semestre::findOrFail($semestreId);
-        //$etudiants = $semestre->etudiant()->with('user')->get();
-        $etudiants = $semestre->etudiant()->with(['user', 'note.ec'])->get();
+        $etudiants = $semestre->etudiant()->with(['user'])->get();
+        $etudiants->each(function ($etudiant) {
+            $uesCreditsNotes = [];
+            $worstNote = null;
+
+            foreach ($etudiant->ec as $ec) {
+                if ($ec->ue && $ec->pivot->noteEc) {
+                    $uesCreditsNotes[] = [
+                        'note_ponderee' => $ec->pivot->noteEc * $ec->ue->credit_ue,
+                        'credit' => $ec->ue->credit_ue
+                    ];
+                    if (is_null($worstNote) || $ec->pivot->noteEc < $worstNote) {
+                        $worstNote = $ec->pivot->noteEc;
+                    }
+                }
+            }
+            $totalCredits = array_sum(array_column($uesCreditsNotes, 'credit'));
+            $totalNotesPonderees = array_sum(array_column($uesCreditsNotes, 'note_ponderee'));
+
+            $etudiant->moyenne_generale = $totalCredits > 0 ? round($totalNotesPonderees / $totalCredits, 2) : null;
+            $etudiant->worstNote = $worstNote;
+        });
+
         return response()->json($etudiants);
     }
+
+    //---------------------------------------------------------------------------------------------------
 
 
     public function addEtudiant(Request $request)
