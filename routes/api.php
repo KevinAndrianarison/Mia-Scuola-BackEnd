@@ -98,6 +98,8 @@ Route::get('/parcours/getById/{niveau_id}', [ParcourController::class, 'getByNiv
 Route::get('/parcours/getByMentionId/{mention_id}', [ParcourController::class, 'getByMentionId']);
 Route::get('/parcours/getByEnsId/{enseignant_id}', [ParcourController::class, 'getByEnseignantId']);
 Route::put('/parcours/{id}/clearEnseignant', [ParcourController::class, 'clearEnseignantId']);
+Route::get('parcours/enseignant/{enseignant_id}/au/{au_id}', [ParcourController::class, 'getParcoursByIdEnsAndAU']);
+
 
 
 Route::apiResource('semestre', SemestreController::class);

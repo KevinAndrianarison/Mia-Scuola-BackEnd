@@ -114,4 +114,16 @@ class ParcourController extends Controller
         $parcours = Parcour::where('enseignant_id', $enseignant_id)->get();
         return response()->json($parcours, 200);
     }
+    public function getParcoursByIdEnsAndAU($enseignant_id, $au_id)
+    {
+        $parcours = Parcour::where('enseignant_id', $enseignant_id)
+            ->whereHas(
+                'niveau',
+                function ($query) use ($au_id) {
+                    $query->where('au_id', $au_id);
+                }
+            )
+            ->get();
+        return response()->json($parcours, 200);
+    }
 }
