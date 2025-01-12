@@ -282,6 +282,14 @@ class AuthController extends Controller
         if (!Hash::check($validatedData['password'], $user->password)) {
             return response()->json(['error' => 'Mot de passe actuel incorrect'], 403);
         };
+        $existingUserWithSamePassword = User::where('email', $validatedData['email'])
+            ->where('id', '!=', $id)
+            ->where('password', Hash::make($validatedData['Newpassword']))
+            ->first();
+
+        if ($existingUserWithSamePassword) {
+            return response()->json(['error' => 'Ce mot de passe est déjà utilisé pour un autre compte'], 400);
+        }
         $user->update([
             'password' => $validatedData['Newpassword'],
         ]);
