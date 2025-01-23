@@ -39,9 +39,11 @@ class EtudiantController extends Controller
             'nom_pere_etud' => 'nullable',
             'sexe_etud' => 'nullable',
             'CIN_etud' => 'nullable',
+            'status_etud' => 'nullable',
             'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
+            'au_id' => 'required|exists:aus,id'
         ]);
         $etudiant = Etudiant::create($request->all());
 
@@ -166,6 +168,7 @@ class EtudiantController extends Controller
             'nom_pere_etud' => 'nullable',
             'sexe_etud' => 'nullable',
             'CIN_etud' => 'nullable',
+            'status_etud' => 'nullable',
             'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
             'photoBordereaux' => 'nullable',
@@ -209,6 +212,17 @@ class EtudiantController extends Controller
     public function getByUserId($user_id)
     {
         $etudiant = Etudiant::where('user_id', $user_id)->with('user')->get();
+        return response()->json($etudiant, 200);
+    }
+
+    public function getByAuId($au_id)
+    {
+        $etudiant = Etudiant::where('au_id', $au_id)
+        ->with('au')
+        ->with('user')
+        ->with('semestre')
+        ->with('semestre.parcour')
+        ->get();
         return response()->json($etudiant, 200);
     }
 }

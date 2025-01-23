@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('anneeBAC_etud')->nullable();
             $table->string('etabOrigin_etud')->nullable();
             $table->integer('telephone_etud')->nullable();
+            $table->integer('status_etud')->nullable();
             $table->string('matricule_etud')->nullable();
             $table->string('nom_mere_etud')->nullable();
             $table->string('nom_pere_etud')->nullable();
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->string('nom_tuteur')->nullable();
             $table->string("photoBordereaux_name")->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('au_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
