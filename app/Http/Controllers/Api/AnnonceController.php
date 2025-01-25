@@ -36,10 +36,18 @@ class AnnonceController extends Controller
             'categori_id' => 'required|exists:categoris,id'
 
         ]);
-        $file = $request->file('fichier');
-        $fileName = $file->getClientOriginalName();
 
-        $path = $file->storeAs('public/annonce', $fileName);
+
+        $fileName = null;
+        $path = null;
+
+
+        if ($request->hasFile('fichier')) {
+            $file = $request->file('fichier');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/annonce', $fileName);
+        }
+
         $fileRecord = Annonce::create([
             'titre' => $validatedData['titre'],
             'description' => $validatedData['description'],

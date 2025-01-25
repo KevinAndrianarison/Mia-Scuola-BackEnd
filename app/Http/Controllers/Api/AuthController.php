@@ -181,9 +181,14 @@ class AuthController extends Controller
             'photo' => 'nullable'
         ]);
 
-        $file = $request->file('photo');
-        $fileName = $file->getClientOriginalName();
-        $path = $file->storeAs('public/users', $fileName);
+        $fileName = null;
+        $path = null;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/users', $fileName);
+        }
 
         $fileRecord = User::create([
             'status_user' => $validatedData['status_user'],
