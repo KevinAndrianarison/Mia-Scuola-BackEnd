@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->text('description')->nullable();
             $table->string('categorie')->nullable();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('au_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('au_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
