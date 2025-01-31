@@ -89,7 +89,7 @@ class GroupController extends Controller
                 $group->lastMessageUserId = $lastMessage->user_id;
                 $group->lastMessageCreatedAt = $lastMessage->created_at;
             } else {
-                $group->lastMessage = '✨ Démarrer la discussion';
+                $group->lastMessage = 'Démarrer la discussion';
                 $group->lastMessageUserId = null;
                 $group->lastMessageCreatedAt = null;
             }
