@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+
 
 class EtudiantController extends Controller
 {
@@ -23,7 +25,7 @@ class EtudiantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation des entrées
         $request->validate([
             'nomComplet_etud' => 'nullable',
             'date_naissance_etud' => 'nullable',
@@ -45,10 +47,32 @@ class EtudiantController extends Controller
             'user_id' => 'required|exists:users,id',
             'au_id' => 'required|exists:aus,id'
         ]);
+        $exists = Etudiant::where('nomComplet_etud', $request->nomComplet_etud)
+                          ->where('au_id', $request->au_id)
+                          ->exists();
+        if ($exists) {
+            $this->destroyUser($request->user_id);
+            return response()->json(['message' => "Une erreur s'est produite !"], 409);
+        }
         $etudiant = Etudiant::create($request->all());
-
         return response()->json($etudiant, 201);
     }
+
+
+    public function destroyUser($id)
+    {
+        $fileRecord = User::find($id);
+    
+        if ($fileRecord) {
+            if ($fileRecord->photo_name) {
+                Storage::disk('public')->delete('users/' . $fileRecord->photo_name);
+            }
+    
+            $fileRecord->delete();
+        }
+    }
+    
+    
 
     /**
      * Display the specified resource.

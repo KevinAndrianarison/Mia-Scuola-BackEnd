@@ -35,7 +35,7 @@ class AuthController extends Controller
         $request->validate([
             'status_user' => 'nullable',
             'email' => 'nullable',
-            'validiter_compte' => 'nullable',
+            'validiter_compte' => 'nullable'
         ]);
         $user = User::create($request->all());
 
