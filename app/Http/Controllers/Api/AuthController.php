@@ -261,19 +261,39 @@ class AuthController extends Controller
     }
 
 
+    // public function login(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required',
+    //     ]);
+
+    //     if (!$token = JWTAuth::attempt($validatedData)) {
+    //         return response()->json(['error' => 'Autorisation refusé !'], 401);
+    //     }
+
+    //     return $this->createNewToken($token);
+    // }
+
+
     public function login(Request $request)
-    {
-        $validatedData = $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+{
+    $validatedData = $request->validate([
+        'email' => 'required',
+        'password' => 'required',
+    ]);
+    $user = User::where('email', $validatedData['email'])
+                ->where('validiter_compte', 'true')
+                ->first();
 
-        if (!$token = JWTAuth::attempt($validatedData)) {
-            return response()->json(['error' => 'Autorisation refusé !'], 401);
-        }
+    Log::info('User details:', ['user' => $user]);
 
-        return $this->createNewToken($token);
+    if (!$user || !JWTAuth::attempt($validatedData)) {
+        return response()->json(['error' => 'Autorisation refusé ou compte non valide !'], 401);
     }
+    return $this->createNewToken(JWTAuth::attempt($validatedData));
+}
+
 
 
     public function changeMdp(Request $request, $id)
