@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Annonce extends Model
 {
     use HasFactory;
+
+
     protected $fillable = ['titre', 'description', 'fichier_nom', 'user_id', 'categori_id'];
     protected $appends = ['liked_by_user'];
     public function user()
