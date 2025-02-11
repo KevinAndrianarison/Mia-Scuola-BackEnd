@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\SalleController;
 use App\Http\Controllers\Api\SemestreController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UeController;
+use App\Http\Controllers\Api\AdminController;
+
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
@@ -45,6 +47,9 @@ Route::put('user/changemdp/{id}', [AuthController::class, 'changeMdp']);
 
 Route::apiResource('etablissement', EtablissementController::class);
 
+Route::apiResource('admin', AdminController::class);
+Route::get('/admin/getById/{user_id}', [AdminController::class, 'getByUserId']);
+Route::get('/admins/getFirst', [AdminController::class, 'getFirst']);
 
 Route::apiResource('directeur', DirecteurController::class);
 Route::get('/directeur/getById/{user_id}', [DirecteurController::class, 'getByUserId']);
