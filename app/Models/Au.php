@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Au extends Model
 {
     use HasFactory;
-    protected $fillable = ['annee_debut', 'annee_fin', 'etablissement_id'];
+    protected $fillable = ['annee_debut', 'annee_fin', 'etablissement_id', "montant_releve", 'montant_certificatScol' ];
 
     public function etablissement()
     {

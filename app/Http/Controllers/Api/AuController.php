@@ -25,6 +25,8 @@ class AuController extends Controller
         $request->validate([
             'annee_debut' => 'nullable|integer',
             'annee_fin' => 'nullable|integer',
+            'montant_releve' => 'nullable',
+            'montant_certificatScol' => 'nullable',
             'etablissement_id' => 'required|exists:etablissements,id'
         ]);
         $existing = Au::where('annee_debut', $request->annee_debut)
@@ -58,7 +60,8 @@ class AuController extends Controller
         $request->validate([
             'annee_debut' => 'nullable',
             'annee_fin' => 'nullable',
-            'etablissement_id' => 'required|exists:etablissements,id'
+            'montant_releve' => 'nullable',
+            'montant_certificatScol' => 'nullable',
         ]);
         $au->update($request->all());
         return response()->json($au, 200);

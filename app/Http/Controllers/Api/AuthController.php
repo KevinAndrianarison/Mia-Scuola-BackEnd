@@ -243,9 +243,14 @@ class AuthController extends Controller
             'photo' => 'nullable'
         ]);
 
-        $file = $request->file('photo');
-        $fileName = $file->getClientOriginalName();
-        $path = $file->storeAs('public/users', $fileName);
+        $fileName = null;
+        $path = null;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/users', $fileName);
+        }
 
         $fileRecord = User::create([
             'status_user' => $validatedData['status_user'],
@@ -254,6 +259,98 @@ class AuthController extends Controller
             'validiter_compte' => $validatedData['validiter_compte'],
             'photo_name' => $fileName
         ]);
+        $etablissement = Etablissement::first();
+        if ($etablissement) {
+            $nomEtablissement = $etablissement->nom_etab;
+            $emailEtablissement = $etablissement->email_etab;
+            $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
+            $password = $validatedData['password'];
+
+            $messageContent = "Bonjour {$validatedData['email']},\n\n" .
+                "✅ Votre compte a été créé avec succès !\n\n" .
+                "Voici vos informations de connexion :\n" .
+                "Email : {$validatedData['email']}\n" .
+                "Mot de passe : {$password}\n\n" .
+                "Cordialement,\n{$nomEtablissement} 🤝";
+            try {
+                config([
+                    'mail.mailers.smtp.username' => $emailEtablissement,
+                    'mail.mailers.smtp.password' => $emailEtablissementMdp,
+                    'mail.from.address' => $emailEtablissement,
+                    'mail.from.name' => $nomEtablissement,
+                ]);
+
+                Mail::raw($messageContent, function ($message) use ($validatedData, $emailEtablissement, $nomEtablissement) {
+                    $message->to($validatedData['email'])
+                        ->from($emailEtablissement, $nomEtablissement)
+                        ->subject("Création de votre compte à {$nomEtablissement}");
+                });
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+            }
+        }
+        return response()->json(
+            $fileRecord,
+            201
+        );
+    }
+    public function createAdmin(Request $request)
+    {
+        $validatedData = $request->validate([
+            'status_user' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'validiter_compte' => 'nullable',
+            'photo' => 'nullable'
+        ]);
+
+        $fileName = null;
+        $path = null;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/users', $fileName);
+        }
+
+        $fileRecord = User::create([
+            'status_user' => $validatedData['status_user'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'validiter_compte' => $validatedData['validiter_compte'],
+            'photo_name' => $fileName
+        ]);
+        $etablissement = Etablissement::first();
+
+        if ($etablissement) {
+            $nomEtablissement = $etablissement->nom_etab;
+            $emailEtablissement = $etablissement->email_etab;
+            $emailEtablissementMdp = $etablissement->mdpAppGmail_etab;
+            $password = $validatedData['password'];
+
+            $messageContent = "Bonjour {$validatedData['email']},\n\n" .
+                "✅ Votre compte a été créé avec succès !\n\n" .
+                "Voici vos informations de connexion :\n" .
+                "Email : {$validatedData['email']}\n" .
+                "Mot de passe : {$password}\n\n" .
+                "Cordialement,\n{$nomEtablissement} 🤝";
+            try {
+                config([
+                    'mail.mailers.smtp.username' => $emailEtablissement,
+                    'mail.mailers.smtp.password' => $emailEtablissementMdp,
+                    'mail.from.address' => $emailEtablissement,
+                    'mail.from.name' => $nomEtablissement,
+                ]);
+
+                Mail::raw($messageContent, function ($message) use ($validatedData, $emailEtablissement, $nomEtablissement) {
+                    $message->to($validatedData['email'])
+                        ->from($emailEtablissement, $nomEtablissement)
+                        ->subject("Création de votre compte à {$nomEtablissement}");
+                });
+            } catch (\Exception $e) {
+                Log::error('Erreur lors de l\'envoi de l\'email : ' . $e->getMessage());
+            }
+        }
         return response()->json(
             $fileRecord,
             201
@@ -277,22 +374,22 @@ class AuthController extends Controller
 
 
     public function login(Request $request)
-{
-    $validatedData = $request->validate([
-        'email' => 'required',
-        'password' => 'required',
-    ]);
-    $user = User::where('email', $validatedData['email'])
-                ->where('validiter_compte', 'true')
-                ->first();
+    {
+        $validatedData = $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        $user = User::where('email', $validatedData['email'])
+            ->where('validiter_compte', 'true')
+            ->first();
 
-    Log::info('User details:', ['user' => $user]);
+        Log::info('User details:', ['user' => $user]);
 
-    if (!$user || !JWTAuth::attempt($validatedData)) {
-        return response()->json(['error' => 'Autorisation refusé ou compte non valide !'], 401);
+        if (!$user || !JWTAuth::attempt($validatedData)) {
+            return response()->json(['error' => 'Autorisation refusé ou compte non valide !'], 401);
+        }
+        return $this->createNewToken(JWTAuth::attempt($validatedData));
     }
-    return $this->createNewToken(JWTAuth::attempt($validatedData));
-}
 
 
 

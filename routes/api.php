@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\AdminController;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
+Route::post('user/admin', [AuthController::class, 'createAdmin']);
 Route::post('user/login', [AuthController::class, 'login']);
 Route::put('user/setup/{id}', [AuthController::class, 'update']);
 Route::put('user/setuser/{id}', [AuthController::class, 'setUser']);
@@ -68,7 +69,6 @@ Route::get('/enseignants/{id}', [EnseignantController::class, 'getOneEnseignant'
 Route::apiResource('etudiant', EtudiantController::class);
 Route::get('/etudiant/getById/{user_id}', [EtudiantController::class, 'getByUserId']);
 Route::get('/etudiant/getByAuId/{au_id}', [EtudiantController::class, 'getByAuId']);
-
 
 
 Route::apiResource('au', AuController::class);

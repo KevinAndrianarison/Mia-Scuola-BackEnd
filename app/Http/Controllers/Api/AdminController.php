@@ -30,9 +30,9 @@ class AdminController extends Controller
             'telephone_admin' => 'nullable',
             'user_id' => 'required|exists:users,id'
         ]);
-        $directeur = Directeur::create($request->all());
+        $admin = Admin::create($request->all());
 
-        return response()->json($directeur, 201);
+        return response()->json($admin, 201);
     }
 
     /**

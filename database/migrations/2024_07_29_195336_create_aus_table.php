@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('annee_debut')->nullable();
             $table->integer('annee_fin')->nullable();
+            $table->string('montant_releve')->nullable();
+            $table->string('montant_certificatScol')->nullable();
             $table->foreignId('etablissement_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
