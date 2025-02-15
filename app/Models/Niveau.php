@@ -22,4 +22,8 @@ class Niveau extends Model
     {
         return $this->hasMany(Parcour::class);
     }
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

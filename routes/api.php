@@ -87,6 +87,7 @@ Route::get('/transactionGetByAU/{au_id}', [TransactionController::class, 'getByI
 
 Route::apiResource('grpedt', GroupedtController::class);
 Route::get('/grpedtGetByAU/{au_id}', [GroupedtController::class, 'getByIdAU']);
+Route::get('/grpedtGetByNiveau/{niveau_id}', [GroupedtController::class, 'getByIdNiveau']);
 
 
 

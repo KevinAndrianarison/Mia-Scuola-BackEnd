@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
     use HasFactory;
-    protected $fillable = ['date', 'montant', 'type', 'description', 'categorie', 'user_id', 'au_id'];
+    protected $fillable = ['date', 'montant', 'type', 'description', 'categorie', 'user_id', 'au_id', 'niveau_id'];
 
     public function au()
     {
@@ -17,5 +17,9 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function niveau()
+    {
+        return $this->belongsTo(Niveau::class);
     }
 }

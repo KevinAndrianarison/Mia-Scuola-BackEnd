@@ -32,6 +32,7 @@ class TransactionController extends Controller
             'categorie' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'au_id' => 'required|exists:aus,id',
+            'niveau_id' => 'required|exists:niveaux,id'
         ]);
 
         $trans = Transaction::create($validated);
@@ -71,6 +72,19 @@ class TransactionController extends Controller
     {
         $trans = Transaction::where('au_id', $au_id)
             ->with('au')
+            ->with('niveau')
+            ->with('au.etablissement')
+            ->with('user')
+            ->with('user.agentscolarite')
+            ->get();
+        return response()->json($trans, 200);
+    }
+
+    public function getByIdNiveau($niveau_id,)
+    {
+        $trans = Transaction::where('niveau_id', $niveau_id)
+            ->with('au')
+            ->with('niveau')
             ->with('au.etablissement')
             ->with('user')
             ->with('user.agentscolarite')
