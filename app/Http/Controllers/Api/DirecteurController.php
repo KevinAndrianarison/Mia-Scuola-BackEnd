@@ -80,6 +80,6 @@ class DirecteurController extends Controller
 
     public function getFirst()
     {
-        return response()->json(Directeur::first(), 200);
+        return response()->json(Directeur::with('user')->first(), 200);
     }
 }

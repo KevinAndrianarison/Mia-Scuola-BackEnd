@@ -79,6 +79,6 @@ class AdminController extends Controller
 
     public function getFirst()
     {
-        return response()->json(Admin::first(), 200);
+        return response()->json(Admin::with('user')->first(), 200);
     }
 }
