@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\Api\AcceuilimageController;
 use App\Http\Controllers\Api\AuController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
@@ -31,7 +32,7 @@ use App\Http\Controllers\Api\SemestreController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UeController;
 use App\Http\Controllers\Api\AdminController;
-
+use App\Http\Controllers\Api\MentionacceuilController;
 
 Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/directeur', [AuthController::class, 'createDirecteur']);
@@ -94,8 +95,11 @@ Route::get('/grpedtGetByNiveau/{niveau_id}', [GroupedtController::class, 'getByI
 Route::apiResource('niveau', NiveauController::class);
 Route::get('/niveau/getById/{au_id}', [NiveauController::class, 'getByAuId']);
 
+Route::apiResource('acceuil', AcceuilimageController::class);
+
 
 Route::apiResource('mention', MentionController::class);
+Route::apiResource('acceuilmention', MentionacceuilController::class);
 Route::get('/mention/getById/{niveau_id}', [MentionController::class, 'getByNiveauId']);
 Route::get('/mention/getByEnsId/{enseignant_id}/{au_id}', [MentionController::class, 'getByEnseignantId']);
 Route::put('/mentions/{id}/clearEnseignant', [MentionController::class, 'clearEnseignantId']);
