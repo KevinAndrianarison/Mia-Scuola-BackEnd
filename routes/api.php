@@ -32,6 +32,8 @@ use App\Http\Controllers\Api\SemestreController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UeController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\CategoriecongeController;
+use App\Http\Controllers\Api\CongepermissionController;
 use App\Http\Controllers\Api\MentionacceuilController;
 
 Route::post('user/register', [AuthController::class, 'register']);
@@ -148,6 +150,9 @@ Route::get('/cours/getByIdEC/{ec_id}', [CourController::class, 'getByIdEC']);
 Route::apiResource('categoris', CategoriController::class);
 
 
+Route::apiResource('categorieconge', CategoriecongeController::class);
+
+
 Route::apiResource('note', NoteController::class);
 
 
@@ -156,6 +161,10 @@ Route::get('annonce/files/{filename}', [AnnonceController::class, 'downloadFile'
 Route::get('annonces/categorie/{categori_id}', [AnnonceController::class, 'getAnnonceByIdCategorie']);
 Route::get('annonces/user/{user_id}', [AnnonceController::class, 'getAnnonceByIdUser']);
 Route::post('/annonces/{annonce}/like', [AnnonceController::class, 'toggleLike']);
+
+
+Route::apiResource('congepermission', CongepermissionController::class);
+Route::get('congepermission/files/{filename}', [CongepermissionController::class, 'downloadFile'])->name('files.download');
 
 
 

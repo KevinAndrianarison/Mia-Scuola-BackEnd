@@ -53,6 +53,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Annonce::class);
     }
+    public function congepermission()
+    {
+        return $this->hasMany(Congepermission::class);
+    }
     public function com()
     {
         return $this->hasMany(Com::class);
