@@ -22,6 +22,17 @@ class CongepermissionController extends Controller
         );
     }
 
+    public function getAnnonceByIdUser($user_id)
+    {
+        //
+        return response()->json(
+            Congepermission::where('user_id', $user_id)
+                ->with(['user'])
+                ->get(),
+            200
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */

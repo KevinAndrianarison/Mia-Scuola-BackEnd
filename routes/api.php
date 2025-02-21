@@ -165,6 +165,7 @@ Route::post('/annonces/{annonce}/like', [AnnonceController::class, 'toggleLike']
 
 Route::apiResource('congepermission', CongepermissionController::class);
 Route::get('congepermission/files/{filename}', [CongepermissionController::class, 'downloadFile'])->name('files.download');
+Route::get('congepermissions/user/{user_id}', [CongepermissionController::class, 'getAnnonceByIdUser']);
 
 
 
