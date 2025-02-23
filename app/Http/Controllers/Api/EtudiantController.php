@@ -221,6 +221,7 @@ class EtudiantController extends Controller
         $validatedData = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'validiter_compte' => 'required',
             'nomComplet_etud' => 'nullable',
             'date_naissance_etud' => 'nullable',
             'lieux_naissance_etud' => 'nullable',
@@ -241,10 +242,9 @@ class EtudiantController extends Controller
             'photoBordereaux' => 'nullable',
         ]);
         $user = User::where('email', $validatedData['email'])
-            ->where('password', Hash::make($validatedData['password']))
+            ->where('validiter_compte', $validatedData['validiter_compte'])
             ->first();
-
-        if (!$user) {
+        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
             return response()->json(['error' => 'Utilisateur non trouvé ou mot de passe incorrect'], 404);
         }
         $etudiant = Etudiant::where('user_id', $user->id)->first();
@@ -262,9 +262,9 @@ class EtudiantController extends Controller
             $validatedData['photoBordereaux_name'] = $fileName;
         }
         $etudiant->update($validatedData);
-
         return response()->json($etudiant, 200);
     }
+
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------
 
