@@ -7,7 +7,7 @@ use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Hash;
 
 class EtudiantController extends Controller
 {
@@ -48,8 +48,8 @@ class EtudiantController extends Controller
             'au_id' => 'required|exists:aus,id'
         ]);
         $exists = Etudiant::where('nomComplet_etud', $request->nomComplet_etud)
-                          ->where('au_id', $request->au_id)
-                          ->exists();
+            ->where('au_id', $request->au_id)
+            ->exists();
         if ($exists) {
             $this->destroyUser($request->user_id);
             return response()->json(['message' => "Une erreur s'est produite !"], 409);
@@ -62,17 +62,17 @@ class EtudiantController extends Controller
     public function destroyUser($id)
     {
         $fileRecord = User::find($id);
-    
+
         if ($fileRecord) {
             if ($fileRecord->photo_name) {
                 Storage::disk('public')->delete('users/' . $fileRecord->photo_name);
             }
-    
+
             $fileRecord->delete();
         }
     }
-    
-    
+
+
 
     /**
      * Display the specified resource.
@@ -213,6 +213,61 @@ class EtudiantController extends Controller
         return response()->json($etudiant, 200);
     }
 
+
+
+    // -------------------------------------------------------------------------------------------------------------------------------------------
+    public function updateByEmailAndPassword(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'nomComplet_etud' => 'nullable',
+            'date_naissance_etud' => 'nullable',
+            'lieux_naissance_etud' => 'nullable',
+            'nationalite_etud' => 'nullable',
+            'serieBAC_etud' => 'nullable',
+            'anneeBAC_etud' => 'nullable',
+            'etabOrigin_etud' => 'nullable',
+            'adresse_etud' => 'nullable',
+            'telephone_etud' => 'nullable',
+            'matricule_etud' => 'nullable',
+            'nom_mere_etud' => 'nullable',
+            'nom_pere_etud' => 'nullable',
+            'sexe_etud' => 'nullable',
+            'CIN_etud' => 'nullable',
+            'status_etud' => 'nullable',
+            'validiter_inscri' => 'nullable',
+            'nom_tuteur' => 'nullable',
+            'photoBordereaux' => 'nullable',
+        ]);
+        $user = User::where('email', $validatedData['email'])
+            ->where('password', Hash::make($validatedData['password']))
+            ->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Utilisateur non trouvé ou mot de passe incorrect'], 404);
+        }
+        $etudiant = Etudiant::where('user_id', $user->id)->first();
+
+        if (!$etudiant) {
+            return response()->json(['error' => 'Étudiant non trouvé'], 404);
+        }
+        if ($request->hasFile('photoBordereaux')) {
+            if ($etudiant->photoBordereaux_name) {
+                Storage::delete('public/bordereaux/' . $etudiant->photoBordereaux_name);
+            }
+            $file = $request->file('photoBordereaux');
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('public/bordereaux', $fileName);
+            $validatedData['photoBordereaux_name'] = $fileName;
+        }
+        $etudiant->update($validatedData);
+
+        return response()->json($etudiant, 200);
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------
+
     /**
      * Remove the specified resource from storage.
      */
@@ -242,11 +297,11 @@ class EtudiantController extends Controller
     public function getByAuId($au_id)
     {
         $etudiant = Etudiant::where('au_id', $au_id)
-        ->with('au')
-        ->with('user')
-        ->with('semestre')
-        ->with('semestre.parcour')
-        ->get();
+            ->with('au')
+            ->with('user')
+            ->with('semestre')
+            ->with('semestre.parcour')
+            ->get();
         return response()->json($etudiant, 200);
     }
 }
