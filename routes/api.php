@@ -78,6 +78,7 @@ Route::apiResource('etudiant', EtudiantController::class);
 Route::get('/etudiant/getById/{user_id}', [EtudiantController::class, 'getByUserId']);
 Route::get('/etudiant/getByAuId/{au_id}', [EtudiantController::class, 'getByAuId']);
 Route::put('/updateByEmailAndPassword', [EtudiantController::class, 'updateByEmailAndPassword']);
+Route::get('/getEtudiantByCursusId/{cursu_id}', [EtudiantController::class, 'getEtudiantByCursusId']);
 
 
 

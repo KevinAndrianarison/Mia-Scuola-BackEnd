@@ -104,6 +104,26 @@ class EtudiantController extends Controller
 
         return response()->json($response, 200);
     }
+
+    public function getEtudiantByCursusId($cursu_id)
+    {
+        $etudiants = Etudiant::where('cursu_id', $cursu_id)
+            ->with([
+                'ec',
+                'ec.ue',
+                'ec.ue.semestre',
+                'ec.au',
+                'user'
+            ])->get();
+        $response = [];
+        foreach ($etudiants as $etudiant) {
+            $response[] = $this->structureSemestreAndUe($etudiant);
+        }
+        return response()->json($response, 200);
+    }
+
+
+
     private function structureSemestreAndUe($etudiant)
     {
         $semestres = [];
@@ -168,6 +188,7 @@ class EtudiantController extends Controller
         return [
             'etudiant' => $etudiant,
             'user' => $etudiant->user,
+            'au' => $etudiant->au,
             'semestres' => array_values($semestres),
             'moyenne_generale' => $moyenneGenerale
         ];
