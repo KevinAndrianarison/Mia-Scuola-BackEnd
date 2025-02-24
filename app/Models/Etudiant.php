@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Etudiant extends Model
 {
     use HasFactory;
-    protected $fillable = ['nomComplet_etud', 'au_id', 'status_etud', 'date_naissance_etud', 'lieux_naissance_etud', 'adresse_etud', 'nationalite_etud', 'serieBAC_etud', 'telephone_etud', 'anneeBAC_etud', 'etabOrigin_etud', 'matricule_etud', 'nom_mere_etud', 'nom_pere_etud', 'sexe_etud', 'CIN_etud', 'nom_tuteur', 'user_id', 'validiter_inscri', "photoBordereaux_name"];
+    protected $fillable = ['nomComplet_etud', 'cursu_id', 'au_id', 'status_etud', 'date_naissance_etud', 'lieux_naissance_etud', 'adresse_etud', 'nationalite_etud', 'serieBAC_etud', 'telephone_etud', 'anneeBAC_etud', 'etabOrigin_etud', 'matricule_etud', 'nom_mere_etud', 'nom_pere_etud', 'sexe_etud', 'CIN_etud', 'nom_tuteur', 'user_id', 'validiter_inscri', "photoBordereaux_name"];
 
     public function user()
     {
@@ -17,6 +17,10 @@ class Etudiant extends Model
     public function au()
     {
         return $this->belongsTo(Au::class);
+    }
+    public function cursu()
+    {
+        return $this->belongsTo(Cursu::class);
     }
     public function semestre()
     {

@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\UeController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\CategoriecongeController;
 use App\Http\Controllers\Api\CongepermissionController;
+use App\Http\Controllers\Api\CursuController;
 use App\Http\Controllers\Api\MentionacceuilController;
 
 Route::post('user/register', [AuthController::class, 'register']);
@@ -50,6 +51,10 @@ Route::put('user/changemdp/{id}', [AuthController::class, 'changeMdp']);
 
 
 Route::apiResource('etablissement', EtablissementController::class);
+
+
+Route::apiResource('cursus', CursuController::class);
+
 
 Route::apiResource('admin', AdminController::class);
 Route::get('/admin/getById/{user_id}', [AdminController::class, 'getByUserId']);

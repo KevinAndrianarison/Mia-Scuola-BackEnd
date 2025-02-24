@@ -45,7 +45,9 @@ class EtudiantController extends Controller
             'validiter_inscri' => 'nullable',
             'nom_tuteur' => 'nullable',
             'user_id' => 'required|exists:users,id',
-            'au_id' => 'required|exists:aus,id'
+            'au_id' => 'required|exists:aus,id',
+            'cursu_id' => 'required|exists:cursus,id'
+
         ]);
         $exists = Etudiant::where('nomComplet_etud', $request->nomComplet_etud)
             ->where('au_id', $request->au_id)
