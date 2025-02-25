@@ -34,4 +34,8 @@ class Etudiant extends Model
     {
         return $this->belongsToMany(Ec::class, 'ec_etudiant')->withPivot('noteEc')->withTimestamps();
     }
+    public function commande()
+    {
+        return $this->hasMany(Commande::class);
+    }
 }

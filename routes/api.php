@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UeController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\CategoriecongeController;
+use App\Http\Controllers\Api\CommandeController;
 use App\Http\Controllers\Api\CongepermissionController;
 use App\Http\Controllers\Api\CursuController;
 use App\Http\Controllers\Api\MentionacceuilController;
@@ -81,7 +82,6 @@ Route::put('/updateByEmailAndPassword', [EtudiantController::class, 'updateByEma
 Route::get('/getEtudiantByCursusId/{cursu_id}', [EtudiantController::class, 'getEtudiantByCursusId']);
 
 
-
 Route::apiResource('au', AuController::class);
 
 
@@ -93,6 +93,10 @@ Route::apiResource('edt', EdtController::class);
 
 Route::apiResource('transaction', TransactionController::class);
 Route::get('/transactionGetByAU/{au_id}', [TransactionController::class, 'getByIdAU']);
+
+
+Route::apiResource('commande', CommandeController::class);
+Route::get('/commandeGetByEtd/{etudiant_id}', [CommandeController::class, 'getByIdEtudiant']);
 
 
 
