@@ -138,6 +138,7 @@ class EtudiantController extends Controller
                         'id' => $semestreId,
                         'nom_semestre' => $ec->ue->semestre->nom_semestre,
                         'edt' => $ec->ue->semestre->groupedt,
+                        'cours' => $ec->cour,
                         'ues' => []
                     ];
                 }
