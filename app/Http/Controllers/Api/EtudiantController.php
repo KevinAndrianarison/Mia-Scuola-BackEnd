@@ -137,6 +137,7 @@ class EtudiantController extends Controller
                     $semestres[$semestreId] = [
                         'id' => $semestreId,
                         'nom_semestre' => $ec->ue->semestre->nom_semestre,
+                        'edt' => $ec->ue->semestre->groupedt,
                         'ues' => []
                     ];
                 }
