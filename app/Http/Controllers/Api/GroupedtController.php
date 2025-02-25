@@ -40,7 +40,7 @@ class GroupedtController extends Controller
     public function show(string $id)
     {
         //
-        $group = Groupedt::with(['semestre', 'parcour', 'au', 'edt'])->find($id);
+        $group = Groupedt::with(['semestre', 'parcour', 'au', 'edt', 'edt.enseignant', 'edt.heure', 'edt.salle', 'edt.jour'])->find($id);
         return response()->json($group);
     }
 
