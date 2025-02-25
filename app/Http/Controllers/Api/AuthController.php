@@ -373,23 +373,46 @@ class AuthController extends Controller
     // }
 
 
+    // public function login(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'email' => 'required',
+    //         'password' => 'required',
+    //     ]);
+    //     $user = User::where('email', $validatedData['email'])
+    //         ->where('validiter_compte', 'true')
+    //         ->first();
+
+    //     Log::info('User details:', ['user' => $user]);
+
+    //     if (!$user || !JWTAuth::attempt($validatedData)) {
+    //         return response()->json(['error' => 'Autorisation refusé ou compte non valide !'], 401);
+    //     }
+    //     return $this->createNewToken(JWTAuth::attempt($validatedData));
+    // }
+    
+
     public function login(Request $request)
     {
         $validatedData = $request->validate([
             'email' => 'required',
             'password' => 'required',
         ]);
+
         $user = User::where('email', $validatedData['email'])
             ->where('validiter_compte', 'true')
             ->first();
 
         Log::info('User details:', ['user' => $user]);
 
-        if (!$user || !JWTAuth::attempt($validatedData)) {
-            return response()->json(['error' => 'Autorisation refusé ou compte non valide !'], 401);
+        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
+            return response()->json(['error' => 'Autorisation refusée ou compte non valide !'], 401);
         }
-        return $this->createNewToken(JWTAuth::attempt($validatedData));
+        return $this->createNewToken(JWTAuth::fromUser($user), $user);
     }
+
+
+
 
 
 
@@ -420,13 +443,14 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function createNewToken($token)
+    public function createNewToken($token, $user)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60,
-            'user' => Auth::user()
+            'user' => $user
+            // 'user' => Auth::user()
         ]);
     }
     public function profil()
