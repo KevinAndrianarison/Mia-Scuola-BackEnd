@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('status')->nullable();
             $table->string('date')->nullable();
             $table->foreignId('etudiant_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('au_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

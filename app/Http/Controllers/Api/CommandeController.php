@@ -15,7 +15,7 @@ class CommandeController extends Controller
     {
         //
         return response()->json(
-            Commande::with(['etudiant', 'etudiant.user'])
+            Commande::with(['au', 'etudiant', 'etudiant.user'])
                 ->get(),
             200
         );
@@ -32,6 +32,7 @@ class CommandeController extends Controller
             'categorie' => 'nullable',
             'status' => 'nullable',
             'etudiant_id' => 'required|exists:etudiants,id',
+            'au_id' => 'required|exists:aus,id',
         ]);
 
         $commande = Commande::create($validated);
@@ -44,7 +45,7 @@ class CommandeController extends Controller
     public function show(string $id)
     {
         //
-        $commande = Commande::with(['etudiant', 'etudiant.user'])->find($id);
+        $commande = Commande::with(['au', 'etudiant', 'etudiant.user'])->find($id);
         return response()->json($commande);
     }
 
@@ -68,6 +69,7 @@ class CommandeController extends Controller
     public function getByIdEtudiant($etudiant_id,)
     {
         $trans = Commande::where('etudiant_id', $etudiant_id)
+            ->with('au')
             ->with('etudiant')
             ->with('etudiant.user')
             ->get();

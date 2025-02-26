@@ -22,6 +22,10 @@ class Au extends Model
     {
         return $this->hasMany(Etudiant::class);
     }
+    public function commande()
+    {
+        return $this->hasMany(Commande::class);
+    }
 
     public function mention()
     {
