@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string("photoBordereaux_name")->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('au_id')->constrained()->onDelete('cascade');
+            $table->foreignId('niveau_id')->constrained()->onDelete('cascade');
             $table->foreignId('cursu_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

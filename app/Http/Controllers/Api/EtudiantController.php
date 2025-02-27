@@ -46,6 +46,7 @@ class EtudiantController extends Controller
             'nom_tuteur' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'au_id' => 'required|exists:aus,id',
+            'niveau_id' => 'required|exists:niveaux,id',
             'cursu_id' => 'required|exists:cursus,id'
 
         ]);
@@ -97,7 +98,8 @@ class EtudiantController extends Controller
             'ec.ue',
             'ec.ue.semestre',
             'ec.au',
-            'user'
+            'user',
+            'niveau'
         ])->findOrFail($id);
 
         $response = $this->structureSemestreAndUe($etudiant);
@@ -113,7 +115,8 @@ class EtudiantController extends Controller
                 'ec.ue',
                 'ec.ue.semestre',
                 'ec.au',
-                'user'
+                'user',
+                'niveau'
             ])->get();
         $response = [];
         foreach ($etudiants as $etudiant) {
@@ -190,6 +193,7 @@ class EtudiantController extends Controller
         return [
             'etudiant' => $etudiant,
             'user' => $etudiant->user,
+            'niveau' => $etudiant->niveau,
             'au' => $etudiant->au,
             'semestres' => array_values($semestres),
             'moyenne_generale' => $moyenneGenerale
@@ -324,6 +328,7 @@ class EtudiantController extends Controller
         $etudiant = Etudiant::where('au_id', $au_id)
             ->with('au')
             ->with('user')
+            ->with('niveau')
             ->with('semestre')
             ->with('semestre.parcour')
             ->get();

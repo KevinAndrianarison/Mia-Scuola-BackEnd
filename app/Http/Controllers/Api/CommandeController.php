@@ -15,7 +15,7 @@ class CommandeController extends Controller
     {
         //
         return response()->json(
-            Commande::with(['au', 'etudiant', 'etudiant.user'])
+            Commande::with(['au', 'etudiant', 'etudiant.user', 'etudiant.niveau'])
                 ->get(),
             200
         );
@@ -45,7 +45,7 @@ class CommandeController extends Controller
     public function show(string $id)
     {
         //
-        $commande = Commande::with(['au', 'etudiant', 'etudiant.user'])->find($id);
+        $commande = Commande::with(['au', 'etudiant', 'etudiant.user', 'etudiant.niveau'])->find($id);
         return response()->json($commande);
     }
 
@@ -72,6 +72,7 @@ class CommandeController extends Controller
             ->with('au')
             ->with('etudiant')
             ->with('etudiant.user')
+            ->with('etudiant.niveau')
             ->get();
         return response()->json($trans, 200);
     }

@@ -18,6 +18,10 @@ class Niveau extends Model
     {
         return $this->hasMany(Mention::class);
     }
+    public function etudiant()
+    {
+        return $this->hasMany(Etudiant::class);
+    }
     public function parcour()
     {
         return $this->hasMany(Parcour::class);
