@@ -21,9 +21,11 @@ return new class extends Migration
             $table->string("descri_etab")->nullable();
             $table->string("abr_etab")->nullable();
             $table->string("codePostal_etab")->nullable();
+            $table->string("numero")->nullable();
             $table->string("pays_etab")->nullable();
             $table->string("logo_name")->nullable();
             $table->string("dateCreation_etab")->nullable();
+            $table->text("historique")->nullable();
             $table->timestamps();
         });
     }
