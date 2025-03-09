@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mentionacceuils', function (Blueprint $table) {
             $table->id();
             $table->string('nomMention')->nullable();
-            $table->string('descriptionMention')->nullable();
+            $table->text('descriptionMention')->nullable();
             $table->string("photo_name")->nullable();
             $table->timestamps();
         });
