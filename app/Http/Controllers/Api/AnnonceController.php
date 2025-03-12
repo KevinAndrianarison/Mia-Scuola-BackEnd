@@ -32,6 +32,7 @@ class AnnonceController extends Controller
             'titre' => 'nullable',
             'description' => 'nullable',
             'fichier' => 'nullable',
+            'status' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'categori_id' => 'required|exists:categoris,id'
 
@@ -53,6 +54,7 @@ class AnnonceController extends Controller
             'description' => $validatedData['description'],
             'user_id' => $validatedData['user_id'],
             'categori_id' => $validatedData['categori_id'],
+            'status' => $validatedData['status'],
             'fichier_nom' => $fileName
         ]);
         return response()->json($fileRecord, 201);
@@ -82,6 +84,7 @@ class AnnonceController extends Controller
             'titre' => 'nullable',
             'description' => 'nullable',
             'fichier' => 'nullable',
+            'status' => 'nullable',
             'categori_id' => 'nullable|exists:categoris,id'
         ]);
         $fileRecord = Annonce::findOrFail($id);

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('titre')->nullable();
             $table->text('description')->nullable();
             $table->string('fichier_nom')->nullable();
+            $table->string('status')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('categori_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
