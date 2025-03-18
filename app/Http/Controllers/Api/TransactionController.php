@@ -32,7 +32,7 @@ class TransactionController extends Controller
             'categorie' => 'nullable',
             'user_id' => 'required|exists:users,id',
             'au_id' => 'required|exists:aus,id',
-            'niveau_id' => 'required|exists:niveaux,id'
+            'niveau_id' => 'nullable'
         ]);
 
         $trans = Transaction::create($validated);
